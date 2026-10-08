@@ -10,6 +10,7 @@
 | COMPLETED | Public Stage 1 demo | Pages workflow passed; live search and 4/4 diagnostic checks verified in browser |
 | COMPLETED | Real corpus and compatible qrels | NFCorpus source/rights note, pinned archive and file hashes, disjoint splits, local manifest |
 | COMPLETED | Fixed lexical benchmark | Direct BM25 TREC run and aggregate test Recall/MRR/nDCG at 5 and 10 |
+| PLANNED | Train small real-data bi-encoder | `research/TRAINING_PLAN.md`; implementation, actual weights, and measured results pending |
 | BACKLOG | Dense and hybrid fixed baselines | Repeatable rankings with matched budget |
 | BACKLOG | Learned cost aware controller | Disjoint splits and full call accounting |
 | BACKLOG | Base and LoRA query rewriting | Feasible local model and actual adapter weights |

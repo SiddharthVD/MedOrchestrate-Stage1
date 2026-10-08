@@ -38,6 +38,8 @@ The local Python workbench now accepts a frozen BEIR-format NFCorpus dataset for
 
 Follow the [Stage 2 protocol](research/STAGE2_PROTOCOL.md) to download the pinned archive, verify its hashes, freeze the manifest, and reproduce the test run. The first run evaluated 323 judged test queries over 3,633 documents. The [aggregate results at 5](artifacts/benchmark/nfcorpus-bm25-k5.json) and [at 10](artifacts/benchmark/nfcorpus-bm25-k10.json) are included with provenance and run hashes. These scores describe literature retrieval on NFCorpus; it has no dated patient cases or patient-specific judgments. No model has been trained in Stage 2.
 
+The [real-data training plan](research/TRAINING_PLAN.md) sets out a small, local bi-encoder experiment, split and rights checks, honest comparisons, and a separate gate for patient-aware research. It is a plan; model training has not begun.
+
 The Research Evaluation view computes Recall@5, MRR@5 and nDCG@5 for six hand-labeled questions about the invented records. These numbers verify the evaluation code and do not measure clinical relevance. The same raw run can be saved with `python -m medorchestrate.evaluate --output artifacts/demo/fixture_evaluation.json`.
 
 To search separately imported citation metadata, provide a local JSONL file with `id`, `title`, `abstract`, `source`, `year`, `published_on` (`YYYY-MM-DD`), `source_type`, and an HTTP(S) `url`. Run `python -m medorchestrate.corpus path/to/records.jsonl`, then select the imported corpus in the workbench. The importer checks field format, dates, IDs, and URLs; it does not verify that the citations or links are genuine. Do not import patient information.
