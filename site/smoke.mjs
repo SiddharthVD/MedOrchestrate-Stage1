@@ -13,6 +13,7 @@ const read = name => JSON.parse(fs.readFileSync(path.join(__dirname, 'data', nam
 const cases = read('cases.json');
 const documents = read('documents.json');
 const qrels = read('demo_qrels.json');
+const benchmarkSummary = read('benchmark_summary.json');
 const diabetes = cases.find(row => row.id === 'case-diabetes-01');
 const question = diabetes.suggested_question;
 
@@ -73,4 +74,18 @@ assert.equal(evaluation.query_count, 6);
 const earlyCase = await api.request('/api/cases/case-diabetes-01?as_of=1900-01-01');
 assert.equal(earlyCase.facts.length, 0);
 await assert.rejects(api.request('/api/search', { body: JSON.stringify({ ...context, corpus: 'imported-local-v1', route: 'direct_bm25' }) }), /Only the invented corpus/);
-console.log('Static demo smoke passed: date filtering, all routes, ranking, fictional evaluation, and UI adapter requests.');
+assert.deepEqual(Object.keys(benchmarkSummary).sort(), ['dataset', 'document_count', 'edition', 'judged_query_count', 'metrics', 'query_count', 'relevance_threshold', 'route', 'split'].sort());
+assert.equal(benchmarkSummary.dataset, 'nfcorpus');
+assert.equal(benchmarkSummary.route, 'direct_bm25');
+assert.equal(benchmarkSummary.split, 'test');
+assert.equal(benchmarkSummary.document_count, 3633);
+assert.equal(benchmarkSummary.query_count, 3237);
+assert.equal(benchmarkSummary.judged_query_count, 323);
+assert.deepEqual(benchmarkSummary.metrics.map(row => row.k), [5, 10]);
+assert.ok(Math.abs(benchmarkSummary.metrics[0].mean_recall_at_k - 0.12000599949039278) < 1e-12);
+assert.ok(Math.abs(benchmarkSummary.metrics[1].mean_ndcg_at_k - 0.30996294534532576) < 1e-12);
+const publicSummary = JSON.stringify(benchmarkSummary);
+assert.doesNotMatch(publicSummary, /corpus\.jsonl|queries\.jsonl|qrels\/|run_manifest|ranked_ids|query_text/);
+const page = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+assert.match(page, /https:\/\/github\.com\/SiddharthVD\/MedOrchestrate-Stage1\/blob\/main\/research\/STAGE2_PROTOCOL\.md/);
+console.log('Static demo smoke passed: five-view fixture, UI adapter, and aggregate-only Stage 2 summary.');

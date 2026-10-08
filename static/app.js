@@ -2,7 +2,7 @@ const $ = id => document.getElementById(id);
 const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const routeNames = { direct_bm25: 'Direct BM25', expanded_bm25: 'Expanded BM25', adaptive: 'Adaptive rule' };
 const pages = new Set(['dashboard', 'cases', 'search', 'compare', 'evaluation']);
-const state = { cases: [], corpora: [], importError: '', currentCase: null, questionEdited: false, contextVersion: 0 };
+const state = { cases: [], corpora: [], importError: '', currentCase: null, questionEdited: false, contextVersion: 0, benchmarkAvailable: false };
 
 function setPage(name) {
   const target = pages.has(name) ? name : 'dashboard';
@@ -31,9 +31,9 @@ function errorPanel(error, retry) {
   return `<div class="error-panel" role="alert"><strong>Unable to load this view</strong><p>${escapeHtml(message)}</p>${retry ? '<button class="secondary retry-button" type="button">Retry connection</button>' : ''}</div>`;
 }
 
-async function json(url, options = {}) {
+async function json(url, options = {}, timeoutMs = 15000) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 15000);
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const response = await fetch(url, { ...options, signal: controller.signal, headers: { Accept: 'application/json', ...(options.headers || {}) } });
     let data;
@@ -42,14 +42,14 @@ async function json(url, options = {}) {
     if (!response.ok) throw new Error(data.error || `Request failed (HTTP ${response.status}).`);
     return data;
   } catch (error) {
-    if (error.name === 'AbortError') throw new Error('The local API did not respond within 15 seconds.');
+    if (error.name === 'AbortError') throw new Error(`The local API did not respond within ${Math.ceil(timeoutMs / 1000)} seconds.`);
     if (error instanceof TypeError) throw new Error('Cannot reach the local API. Start the MedOrchestrate server, then retry.');
     throw error;
   } finally { clearTimeout(timer); }
 }
 
 function setControlsEnabled(enabled) {
-  ['case-select', 'as-of', 'question', 'route', 'corpus', 'search-button', 'compare-button', 'diagnostic-button', 'evaluation-button'].forEach(id => {
+  ['case-select', 'as-of', 'question', 'route', 'corpus', 'search-button', 'compare-button', 'diagnostic-button', 'evaluation-button', 'benchmark-refresh-button'].forEach(id => {
     $(id).disabled = !enabled;
   });
 }
@@ -200,6 +200,57 @@ async function loadEvaluation() {
   } finally { setBusy(button, false, 'Loading…', 'Load fixture metrics'); }
 }
 
+async function loadBenchmarkStatus() {
+  const button = $('benchmark-refresh-button');
+  setBusy(button, true, 'Checking…', 'Refresh benchmark status');
+  $('benchmark-status-output').innerHTML = '<div class="loading-state compact" role="status">Checking local benchmark files and manifest…</div>';
+  try {
+    const report = await json('/api/benchmark/status');
+    state.benchmarkAvailable = report.available === true;
+    $('benchmark-run-button').hidden = !state.benchmarkAvailable;
+    $('benchmark-run-button').disabled = !state.benchmarkAvailable;
+    const details = [
+      ['Dataset', report.dataset || 'NFCorpus'],
+      ['Protocol', report.protocol || 'BEIR corpus, queries, and test qrels; direct BM25 only'],
+      ['Split', report.split || 'test']
+    ];
+    if (state.benchmarkAvailable) {
+      details.push(['Documents', report.document_count ?? '—']);
+      details.push(['Queries', report.query_count ?? '—']);
+      details.push(['Judged queries', report.judged_query_count ?? '—']);
+      if (report.license_statement) details.push(['Declared license terms', report.license_statement]);
+      if (report.citation) details.push(['Citation', report.citation]);
+    }
+    const sourceLink = /^https?:\/\//i.test(report.source_url || '') ? `<a href="${escapeHtml(report.source_url)}" target="_blank" rel="noopener noreferrer">Dataset source page ↗</a>` : '';
+    const hashes = report.file_hashes && typeof report.file_hashes === 'object'
+      ? `<details class="trace-panel"><summary>Verified file hashes <span>Local SHA-256 values</span></summary><div class="trace-content"><dl>${Object.entries(report.file_hashes).map(([name, hash]) => `<div><dt>${escapeHtml(name)}</dt><dd>${escapeHtml(hash)}</dd></div>`).join('')}</dl></div></details>`
+      : '';
+    $('benchmark-status-output').innerHTML = `<div class="benchmark-state ${state.benchmarkAvailable ? 'available' : 'unavailable'}"><span class="benchmark-indicator" aria-hidden="true"></span><strong>${state.benchmarkAvailable ? 'Dataset available and hash matched' : 'Benchmark not available locally'}</strong></div>${!state.benchmarkAvailable && report.reason ? `<p class="benchmark-reason">${escapeHtml(report.reason)}</p>` : ''}<dl class="benchmark-details">${details.map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}</dl>${sourceLink ? `<p class="source-link">${sourceLink}</p>` : ''}${hashes}<p class="field-hint">Dataset availability and file hashes are checked locally. Any license statement is supplied by the dataset manifest and requires your own review.</p>`;
+  } catch (error) {
+    state.benchmarkAvailable = false;
+    $('benchmark-run-button').hidden = true;
+    $('benchmark-run-button').disabled = true;
+    $('benchmark-status-output').innerHTML = errorPanel(error, false);
+  } finally { setBusy(button, false, 'Checking…', 'Refresh benchmark status'); }
+}
+
+async function runBenchmarkEvaluation() {
+  if (!state.benchmarkAvailable) return;
+  const button = $('benchmark-run-button');
+  setBusy(button, true, 'Running benchmark…', 'Run direct BM25 benchmark');
+  $('benchmark-evaluation-output').innerHTML = '<div class="loading-state" role="status">Evaluating direct BM25 on the local NFCorpus test split. The first run can take up to two minutes…</div>';
+  try {
+    const report = await json('/api/benchmark/evaluation?k=10', {}, 120000);
+    const metric = value => Number.isFinite(Number(value)) ? Number(value).toFixed(3) : '—';
+    const manifest = report.run_manifest && typeof report.run_manifest === 'object'
+      ? `<details class="trace-panel"><summary>Run manifest <span>Inspect protocol and file hashes</span></summary><pre class="benchmark-manifest">${escapeHtml(JSON.stringify(report.run_manifest, null, 2))}</pre></details>`
+      : '';
+    $('benchmark-evaluation-output').innerHTML = `<div class="benchmark-result"><p class="panel-kicker">LOCAL BENCHMARK RUN</p><h3>Direct BM25 · ${escapeHtml(report.dataset)} · ${escapeHtml(report.split)}</h3><p class="field-hint">${escapeHtml(report.judged_query_count ?? report.query_count)} judged queries · cutoff ${escapeHtml(report.k)} · ${escapeHtml(report.kind)}</p><div class="benchmark-metrics"><div><span>Mean recall@${escapeHtml(report.k)}</span><strong>${metric(report.metrics?.mean_recall_at_k)}</strong></div><div><span>Mean MRR@${escapeHtml(report.k)}</span><strong>${metric(report.metrics?.mean_mrr_at_k)}</strong></div><div><span>Mean nDCG@${escapeHtml(report.k)}</span><strong>${metric(report.metrics?.mean_ndcg_at_k)}</strong></div></div>${manifest}<p class="field-hint">This run is a lexical baseline on the local benchmark test split. It does not validate adaptive routing or clinical decisions.</p></div>`;
+  } catch (error) {
+    $('benchmark-evaluation-output').innerHTML = errorPanel(error, false);
+  } finally { setBusy(button, false, 'Running benchmark…', 'Run direct BM25 benchmark'); }
+}
+
 async function runDiagnostics() {
   const button = $('diagnostic-button');
   setBusy(button, true, 'Checking…', 'Run fixture checks');
@@ -247,6 +298,7 @@ async function initialize() {
     setControlsEnabled(true);
     await loadCase();
     showConnection(true, 'Local API connected · research prototype');
+    loadBenchmarkStatus();
   } catch (error) {
     showConnection(false, 'Local API unavailable');
     const panel = errorPanel(error, true);
@@ -255,6 +307,8 @@ async function initialize() {
     $('compare-output').innerHTML = panel;
     $('diagnostic-output').innerHTML = panel;
     $('evaluation-output').innerHTML = panel;
+    $('benchmark-status-output').innerHTML = panel;
+    $('benchmark-evaluation-output').innerHTML = '';
     $('case-count').textContent = '—';
     $('doc-count').textContent = '—';
     $('route-count').textContent = '—';
@@ -301,5 +355,7 @@ $('search-form').addEventListener('submit', submitSearch);
 $('compare-button').addEventListener('click', compareRoutes);
 $('diagnostic-button').addEventListener('click', runDiagnostics);
 $('evaluation-button').addEventListener('click', loadEvaluation);
+$('benchmark-refresh-button').addEventListener('click', loadBenchmarkStatus);
+$('benchmark-run-button').addEventListener('click', runBenchmarkEvaluation);
 setPage(location.hash.slice(1));
 initialize();

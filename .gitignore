@@ -4,4 +4,5 @@ __pycache__/
 .pytest_cache/
 data/imported_documents.json
 data/imported_documents.json.tmp
+data/benchmark/
 *.log

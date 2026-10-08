@@ -7,3 +7,5 @@
 - 2026-10-08: Run the local server through `start.cmd` or `python launch.py`; the server must remain running for the workbench URL to load.
 - 2026-10-09: Publish the requested public demonstration from a new `MedOrchestrate-Stage1` repository. Preserve the existing private `medOrchestrate` repository, which contains another one-file college project.
 - 2026-10-09: GitHub Pages is static, so implement the fictional workbench in browser-side JavaScript while retaining Flask and local import in the repository. Gate deployment on Python and static smoke checks.
+- 2026-10-09: Use the BEIR transformed NFCorpus edition for Stage 2, pinned by published archive MD5 and locally observed SHA-256 values. Keep archive, corpus, queries, qrels, and raw runs out of public GitHub because the original owner permits academic use but does not clearly permit redistribution.
+- 2026-10-09: Freeze a fixed direct BM25 baseline and report test metrics without tuning against test judgments. NFCorpus has no dated patient cases; the result is a literature retrieval baseline, not evidence for the patient-aware hypothesis.

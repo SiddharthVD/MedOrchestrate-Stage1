@@ -190,6 +190,27 @@ async function loadEvaluation() {
   } finally { setBusy(button, false, 'Loading…', 'Load fixture metrics'); }
 }
 
+async function loadStage2Summary() {
+  const output = $('stage2-summary-output');
+  try {
+    const response = await fetch('./data/benchmark_summary.json');
+    if (!response.ok) throw new Error(`Aggregate summary unavailable (HTTP ${response.status}).`);
+    const report = await response.json();
+    if (report.dataset !== 'nfcorpus' || report.route !== 'direct_bm25' || report.split !== 'test' || !Array.isArray(report.metrics)) {
+      throw new Error('Aggregate summary has an unexpected format.');
+    }
+    const metrics = [...report.metrics].sort((a, b) => a.k - b.k);
+    if (metrics.length !== 2 || metrics[0].k !== 5 || metrics[1].k !== 10 || metrics.some(row =>
+      !['mean_recall_at_k', 'mean_mrr_at_k', 'mean_ndcg_at_k'].every(key => Number.isFinite(row[key]))
+    )) throw new Error('Aggregate metrics are incomplete.');
+    const count = value => Number(value).toLocaleString('en-US');
+    const score = value => Number(value).toFixed(4);
+    output.innerHTML = `<dl class="stage2-counts"><div><dt>Corpus records</dt><dd>${count(report.document_count)}</dd></div><div><dt>Queries in edition</dt><dd>${count(report.query_count)}</dd></div><div><dt>Judged test queries</dt><dd>${count(report.judged_query_count)}</dd></div></dl><p class="field-hint">${escapeHtml(report.edition)} · Test split · Direct BM25 only</p><div class="table-scroll"><table class="metric-table"><caption>Aggregate NFCorpus test metrics for fixed direct BM25</caption><thead><tr><th scope="col">Cutoff</th><th scope="col">Mean recall</th><th scope="col">Mean MRR</th><th scope="col">Mean graded nDCG</th></tr></thead><tbody>${metrics.map(row => `<tr><th scope="row">@${row.k}</th><td>${score(row.mean_recall_at_k)}</td><td>${score(row.mean_mrr_at_k)}</td><td>${score(row.mean_ndcg_at_k)}</td></tr>`).join('')}</tbody></table></div><p class="field-hint">Recall and MRR count relevance grades ${escapeHtml(report.relevance_threshold)} as relevant; nDCG uses graded relevance. These benchmark scores do not measure patient-specific usefulness.</p>`;
+  } catch (error) {
+    output.innerHTML = errorPanel(error, false);
+  }
+}
+
 async function runDiagnostics() {
   const button = $('diagnostic-button');
   setBusy(button, true, 'Checking…', 'Run fixture checks');
@@ -291,3 +312,4 @@ $('diagnostic-button').addEventListener('click', runDiagnostics);
 $('evaluation-button').addEventListener('click', loadEvaluation);
 setPage(location.hash.slice(1));
 initialize();
+loadStage2Summary();

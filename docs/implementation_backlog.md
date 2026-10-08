@@ -8,7 +8,8 @@
 | COMPLETED | Stage 1 fixture evaluation | Six invented queries; raw Recall@5, MRR@5, nDCG@5 report |
 | IN PROGRESS | Local Flask browser acceptance | Page/API smoke passed; interactive Flask browser walkthrough remains |
 | COMPLETED | Public Stage 1 demo | Pages workflow passed; live search and 4/4 diagnostic checks verified in browser |
-| BACKLOG | Licensed corpus and compatible qrels | Manifest with source, version, license, hashes |
+| COMPLETED | Real corpus and compatible qrels | NFCorpus source/rights note, pinned archive and file hashes, disjoint splits, local manifest |
+| COMPLETED | Fixed lexical benchmark | Direct BM25 TREC run and aggregate test Recall/MRR/nDCG at 5 and 10 |
 | BACKLOG | Dense and hybrid fixed baselines | Repeatable rankings with matched budget |
 | BACKLOG | Learned cost aware controller | Disjoint splits and full call accounting |
 | BACKLOG | Base and LoRA query rewriting | Feasible local model and actual adapter weights |

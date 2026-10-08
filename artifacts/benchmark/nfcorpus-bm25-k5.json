@@ -1,0 +1,43 @@
+{
+  "dataset": "nfcorpus",
+  "edition": "BEIR transformed NFCorpus (2021-01-15 archive)",
+  "kind": "real_benchmark",
+  "split": "test",
+  "route": "direct_bm25",
+  "k": 5,
+  "document_count": 3633,
+  "query_count": 3237,
+  "judged_query_count": 323,
+  "split_query_counts": {
+    "test": 323,
+    "train": 2590,
+    "dev": 324
+  },
+  "relevance_threshold": ">0",
+  "metrics": {
+    "mean_recall_at_k": 0.12000599949039278,
+    "mean_mrr_at_k": 0.5075335397316821,
+    "mean_ndcg_at_k": 0.3364226931617582
+  },
+  "run_manifest": {
+    "format": "beir-jsonl-tsv-v1",
+    "source_url": "https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/nfcorpus.zip",
+    "license_statement": "Original NFCorpus page permits academic use; local research evaluation only; public redistribution not asserted",
+    "rights_source_url": "https://www.cl.uni-heidelberg.de/statnlpgroup/nfcorpus/",
+    "rights_review": "source_reviewed_academic_local_use",
+    "citation": "Boteva et al. (2016), A Full-Text Learning to Rank Dataset for Medical Information Retrieval; Thakur et al. (2021), BEIR: A Heterogeneous Benchmark for Zero-shot Evaluation of Information Retrieval Models",
+    "archive_md5": "a89dba18a62ef92f7d323ec890a0d38d",
+    "file_sha256": {
+      "corpus.jsonl": "10cc83ef1826b1425e6a87090b5140b39b27755d5a27e48215a88611c899991f",
+      "queries.jsonl": "d024e6621b84925d485ae473d316a0c3af31c62c8068a59fb29d22f7613aef2a",
+      "qrels/test.tsv": "f8fba6ef3d4dd9c3a242a8ba4ae38276fc3622fce7dcbae764766d564542fd2a",
+      "qrels/train.tsv": "6336b80f9bffc4f063f3aa450047ad35c0b7c534efe4a6ba35e16dbace047f6a",
+      "qrels/dev.tsv": "b1d38b5e8f78c4a5820bce2b7ec2db54911d7690dc601e76811846b211180bd8"
+    },
+    "retriever": "local_bm25_k1_1.2_b_0.75",
+    "tokenizer": "lowercase_ascii_alphanumeric_stopwords_v1",
+    "run_sha256": "d9849b4d5d5c75cfbe17cbc799a5a7cff5ddf5d82be859c5f1b5ee160e206d53",
+    "run_format": "trec-six-column-v1",
+    "run_file": "nfcorpus-bm25-k5.trec"
+  }
+}

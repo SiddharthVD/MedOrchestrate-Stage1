@@ -4,7 +4,7 @@
 
 MedOrchestrate is a **research prototype for patient-aware medical literature retrieval**. A user chooses a fictional case, selects the date on which facts are allowed to be known, and asks a research question. The system chooses or accepts a search route, ranks matching records, and shows the route, query changes, source metadata, and execution calls.
 
-The long-term research question is whether selecting a retrieval strategy from a question and relevant patient facts can improve document relevance, or preserve relevance while doing less work, compared with a strong fixed strategy. **The current Stage 1 demonstration does not answer that question.** It proves that the basic workflow runs and can be inspected.
+The long-term research question is whether selecting a retrieval strategy from a question and relevant patient facts can improve document relevance, or preserve relevance while doing less work, compared with a strong fixed strategy. **The Stage 1 demonstration and Stage 2 fixed BM25 benchmark do not answer that patient-aware question.** Stage 1 proves the workflow runs; Stage 2 adds a real, reproducible literature retrieval baseline.
 
 MedOrchestrate does not diagnose a patient, select a treatment, prescribe medication, or evaluate clinical outcomes. It accepts no real patient records in this build.
 
@@ -12,7 +12,7 @@ MedOrchestrate does not diagnose a patient, select a treatment, prescribe medica
 
 | Version | Purpose | Where it runs | Data and limits |
 | --- | --- | --- | --- |
-| Local workbench | Full Stage 1 Python/Flask implementation, local citation import, API, tests, and fixture evaluation | `start.cmd` or `python launch.py` | Three fictional cases; 12 invented records; optional locally supplied citation metadata is format checked but not authenticated |
+| Local workbench | Stage 1 Python/Flask workbench plus Stage 2 benchmark loader, fixed BM25 evaluation, API, tests, and local citation import | `start.cmd`, `python launch.py`, or the benchmark CLI | Fictional demo remains separate from the locally downloaded BEIR NFCorpus data; imported citation metadata is format checked but not authenticated |
 | GitHub Pages demo | Public, browser-only presentation of the fictional Stage 1 workflow | GitHub Pages from `site/` | Fictional fixture only; no Python server or local citation import |
 
 The [live public demo](https://siddharthvd.github.io/MedOrchestrate-Stage1/) and the local workbench make the same core route decisions on the same fictional inputs. GitHub Pages is a static host and does not run the Flask API.
@@ -50,6 +50,7 @@ Choose the fictional type 2 diabetes case on `2026-10-08` and ask: “What evide
 - An optional local importer for user-supplied citation metadata. It checks required fields, dates, IDs, source type, and URL shape; **it does not verify publication authenticity, license, full text, or clinical applicability**.
 - A small fixture evaluation with six hand-labeled questions about the 12 invented records. It computes Recall@5, MRR@5, and nDCG@5 as software checks.
 - Saved tests and HTTP smoke artifacts under `artifacts/demo/`.
+- A local Stage 2 BEIR-format benchmark path with pinned NFCorpus archive and file hashes, validated train/dev/test query separation, fixed direct BM25, TREC run output, and aggregate Recall/MRR/nDCG. The benchmark data and raw run files stay outside Git; [the protocol](../research/STAGE2_PROTOCOL.md) records source terms and reproduction steps.
 
 ## How to run and verify it
 
@@ -72,7 +73,7 @@ The [faculty walkthrough](final_demo_guide.md) gives a specific case, question, 
 
 ## What the current results mean
 
-The 12 records and six relevance judgments were created for this software fixture. A ranking difference or fixture metric can show that two routes behave differently and that the metric code runs. It cannot show that a route retrieves better real biomedical literature, benefits patients, or is clinically safe. Local wall time is a machine observation, not an API cost or a comparable benchmark cost.
+The 12 records and six relevance judgments were created for the software fixture. A ranking difference or fixture metric can show that two routes behave differently and that the metric code runs. Stage 2 uses a real literature benchmark, but its queries have no dated patient facts, so its fixed BM25 score cannot measure the patient-aware hypothesis or clinical usefulness. Local wall time is a machine observation, not an API cost or a comparable benchmark cost.
 
 The laptop check recorded roughly 16.8 GB total RAM and 10.5 GB free disk at the Stage 1 checkpoint; GPU runtime support was not established. That is why Stage 1 uses CPU-friendly lexical retrieval and no large model download.
 
@@ -80,33 +81,34 @@ The laptop check recorded roughly 16.8 GB total RAM and 10.5 GB free disk at the
 
 | Gate | Work to complete | Evidence needed before moving on |
 | --- | --- | --- |
-| 2. Corpus and protocol | Select a permitted public biomedical retrieval dataset; define the task, license, edition, corpus, queries, qrels, partitions, hashes, and budgets | Versioned provenance manifest and compatible qrels; no fixture labels reused |
+| 2. Corpus and protocol — implemented | Use the BEIR NFCorpus transformed edition locally; pin source rights, archive and file hashes, split IDs, and a fixed lexical evaluation | Local frozen manifest, compatible train/dev/test qrels, raw BM25 rankings, and aggregate metrics; no fixture labels reused or source data republished |
 | 3. Strong fixed retrieval | Implement and compare BM25, feasible dense retrieval, and a fixed hybrid strategy with one shared ranking policy | Repeatable rankings, full route call logs, resource measures, and development-set comparisons |
 | 4. Rewriting feasibility | Check query fidelity and small local model runtime; consider a base rewriter and LoRA only if data and hardware allow | Valid train/dev/test separation, faithful rewrites, and actual adapter weights/logs if trained |
 | 5. Adaptive controller | Compare rules, question-only learning, patient-aware learning, and a seeded diagnostic while counting all probes and fallbacks | Training-only fitting, development calibration, traceable total execution cost, no locked-test tuning |
 | 6. Formal evaluation | Freeze the comparator and run the locked test, uncertainty analysis, ablations, and failure review | Raw rankings and manifests for every numerical result; patient-aware synthetic results reported separately |
 | 7. Manuscript | Write methods and results tied to real runs and verified literature | Reproducible figures, citations, limitations, and no unsupported clinical claim |
 
-[NFCorpus in BEIR](https://github.com/beir-cellar/beir) is a candidate for the next corpus gate. Its exact terms and dataset edition must be checked before use. It studies retrieval of biomedical articles for its own queries; it does not by itself supply patient-specific judgments. See [benchmark candidate notes](../research/benchmark_candidates.md).
+[NFCorpus in BEIR](https://github.com/beir-cellar/beir) is the selected Stage 2 package. The [original owner](https://www.cl.uni-heidelberg.de/statnlpgroup/nfcorpus/) permits academic use but does not clearly grant public redistribution, so the real files remain local. NFCorpus studies retrieval for its own queries and does not supply patient-specific judgments. See the [frozen protocol](../research/STAGE2_PROTOCOL.md).
 
 ## Smallest useful next steps
 
-1. Confirm the public Pages demo and local workbench both work on the same fictional case, date, and question. Save a screenshot of each view when browser access permits.
-2. Freeze Stage 1 as a reproducible checkpoint with tests, raw outputs, and this guide.
-3. Verify one public benchmark's original source, terms, edition, corpus, and qrels. Record the exact task and the limits of its judgments.
-4. Build and measure a strong fixed BM25 baseline on that benchmark before adding neural routes or training a controller.
+1. Preserve the fixed Stage 2 BM25 result and raw local TREC run as a checkpoint; repeat it after any tokenizer or ranking change.
+2. Plan Stage 3 comparators on the same NFCorpus edition and query split. Tune only on development queries; freeze the comparator before testing.
+3. Add a feasible dense route and a fixed hybrid route with measured resource budgets. Keep patient-aware conclusions out of NFCorpus results.
+4. Obtain a separate, appropriately governed patient-aware question set with independent relevance judgments before training or evaluating a patient-aware controller.
 
 ## Project map
 
 | Path | Role |
 | --- | --- |
 | `medorchestrate/` | Flask routes, corpus validation, lexical retrieval, fixture evaluation |
-| `data/` | Fictional cases, invented records, and demo-only qrels |
+| `data/` | Fictional cases and demo qrels; ignored `data/benchmark/` holds the local real benchmark |
 | `templates/`, `static/` | Local five-view workbench |
 | `site/` | GitHub Pages version of the fictional demo |
 | `tests/` | Python API and retrieval regression tests |
 | `artifacts/demo/` | Actual Stage 1 smoke outputs and environment snapshot |
+| `artifacts/benchmark/` | Aggregate Stage 2 metrics and input/run provenance without benchmark text |
 | `docs/` | Audit, demo guide, decisions, progress, and this guide |
-| `research/` | Candidate benchmark and protocol notes |
+| `research/`, `scripts/` | Benchmark protocol, source selection, and verified local download utility |
 
 The original [handoff document](MedOrchestrate_Codex_Handoff.docx) describes the broader target. A listed future feature is not implemented merely because it appears in that specification.

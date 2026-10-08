@@ -7,6 +7,7 @@ from pathlib import Path
 
 from flask import Flask, jsonify, render_template, request
 
+from .benchmark import benchmark_status, evaluate_benchmark
 from .corpus import read_imported
 from .evaluate import evaluate
 from .search import load_fixture, run_search, strict_date, valid_facts
@@ -120,6 +121,21 @@ def compare():
 @app.get("/api/evaluation")
 def evaluation():
     return jsonify(evaluate())
+
+
+@app.get("/api/benchmark/status")
+def real_benchmark_status():
+    return jsonify(benchmark_status())
+
+
+@app.get("/api/benchmark/evaluation")
+def real_benchmark_evaluation():
+    try:
+        k = int(request.args.get("k", "10"))
+        report = evaluate_benchmark(k=k)
+    except (ValueError, OSError) as error:
+        return jsonify({"error": str(error)}), 409
+    return jsonify(report)
 
 
 if __name__ == "__main__":
