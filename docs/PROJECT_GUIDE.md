@@ -15,7 +15,7 @@ MedOrchestrate does not diagnose a patient, select a treatment, prescribe medica
 | Local workbench | Full Stage 1 Python/Flask implementation, local citation import, API, tests, and fixture evaluation | `start.cmd` or `python launch.py` | Three fictional cases; 12 invented records; optional locally supplied citation metadata is format checked but not authenticated |
 | GitHub Pages demo | Public, browser-only presentation of the fictional Stage 1 workflow | GitHub Pages from `site/` | Fictional fixture only; no Python server or local citation import |
 
-The public demo and the local workbench should make the same core route decisions on the same fictional inputs. Keep the distinction visible: GitHub Pages is a static host and does not run the Flask API.
+The [live public demo](https://siddharthvd.github.io/MedOrchestrate-Stage1/) and the local workbench make the same core route decisions on the same fictional inputs. GitHub Pages is a static host and does not run the Flask API.
 
 ## How the current workflow works
 

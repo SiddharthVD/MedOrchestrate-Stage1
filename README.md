@@ -4,6 +4,8 @@ Stage 1 prototype of a patient aware medical literature retrieval workbench. It 
 
 Read the [project guide](docs/PROJECT_GUIDE.md) for the purpose, implemented scope, limitations, future research gates, and next steps. The public `site/` edition runs entirely in the browser with the fictional fixture; the local Flask workbench includes the API and command-line citation import.
 
+**Live fictional demo:** [Open MedOrchestrate Stage 1](https://siddharthvd.github.io/MedOrchestrate-Stage1/).
+
 ## Run locally
 
 On Windows, double-click `start.cmd`. It starts the server, waits until it is ready, and opens the default browser. Keep its terminal window open while using the workbench.

@@ -7,7 +7,7 @@
 | COMPLETED | Confirm project starting point | Siddharth confirmed no existing code repository |
 | COMPLETED | Stage 1 fixture evaluation | Six invented queries; raw Recall@5, MRR@5, nDCG@5 report |
 | IN PROGRESS | Local Flask browser acceptance | Page/API smoke passed; interactive Flask browser walkthrough remains |
-| IN PROGRESS | Public Stage 1 demo | `site/` and GitHub Actions workflow prepared; verify live Pages URL and static UI |
+| COMPLETED | Public Stage 1 demo | Pages workflow passed; live search and 4/4 diagnostic checks verified in browser |
 | BACKLOG | Licensed corpus and compatible qrels | Manifest with source, version, license, hashes |
 | BACKLOG | Dense and hybrid fixed baselines | Repeatable rankings with matched budget |
 | BACKLOG | Learned cost aware controller | Disjoint splits and full call accounting |
