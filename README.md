@@ -1,0 +1,48 @@
+# MedOrchestrate
+
+Local Stage 1 prototype of a patient aware medical literature retrieval workbench. It uses fictional cases and invented evidence records to demonstrate route selection, ranking, and execution traces. It is **not** a clinical tool or a validated retrieval benchmark.
+
+## Run locally
+
+On Windows, double-click `start.cmd`. It starts the server, waits until it is ready, and opens the default browser. Keep its terminal window open while using the workbench.
+
+Alternatively, from this folder run:
+
+```powershell
+python -m pip install -r requirements.txt
+python launch.py
+```
+
+Open http://127.0.0.1:8000. Python 3.10 or newer is recommended.
+
+Run the included checks:
+
+```powershell
+python -m unittest discover -s tests -v
+```
+
+## Demonstration
+
+Select **Fictional type 2 diabetes case**. Keep the date at `2026-10-08`. In Medical Evidence Search, run the suggested question with the adaptive rule. The rule expands a short query with available case facts and executes BM25 over 12 invented records. Inspect the ranked results and trace. Strategy Comparison runs direct BM25 and the adaptive route on the same input.
+
+The fixture records deliberately have no external links. They are software test material, not published papers. Dense retrieval, hybrid ranking, model rewriting, LoRA, and formal external benchmark evaluation are shown as pending.
+
+The Research Evaluation view computes Recall@5, MRR@5 and nDCG@5 for six hand-labeled questions about the invented records. These numbers verify the evaluation code and do not measure clinical relevance. The same raw run can be saved with `python -m medorchestrate.evaluate --output artifacts/demo/fixture_evaluation.json`.
+
+To search separately imported citation metadata, provide a local JSONL file with `id`, `title`, `abstract`, `source`, `year`, `published_on` (`YYYY-MM-DD`), `source_type`, and an HTTP(S) `url`. Run `python -m medorchestrate.corpus path/to/records.jsonl`, then select the imported corpus in the workbench. The importer checks field format, dates, IDs, and URLs; it does not verify that the citations or links are genuine. Do not import patient information.
+
+## Components
+
+| Module | Input | Output | Example |
+| --- | --- | --- | --- |
+| Case loader | Fictional case ID and date | Facts available by that date | Albuminuria is hidden before 2026-09-01. |
+| Query expansion | Question and available facts | Additional search terms | A short diabetes query gains kidney related terms. |
+| BM25 | Query and fixture records | Ranked matching records | A kidney query ranks kidney records. |
+| Adaptive rule | Question length and available facts | Chosen lexical route | A short question with facts selects expanded BM25. |
+| Trace | Executed route and calls | Inspectable JSON | Shows one retrieval call and terms added. |
+
+## Current research limit
+
+The fixture has only hand-labeled judgments for invented records, with no independent clinical review. Ranking changes, fixture metrics, and local latency cannot establish that adaptive selection improves medical relevance. The next milestone is a permitted biomedical benchmark with matching corpus and judgments, followed by fixed lexical, dense, and hybrid baselines under a frozen protocol.
+
+See [the audit](docs/audit_report.md), [progress](docs/presentation_progress.md), and [demo guide](docs/final_demo_guide.md).

@@ -1,0 +1,18 @@
+test_adaptive_route_executes_and_traces (test_app.WorkbenchTests.test_adaptive_route_executes_and_traces) ... ok
+test_case_and_search_reject_noncanonical_dates (test_app.WorkbenchTests.test_case_and_search_reject_noncanonical_dates) ... ok
+test_future_fact_is_excluded (test_app.WorkbenchTests.test_future_fact_is_excluded) ... ok
+test_search_rejects_bad_date (test_app.WorkbenchTests.test_search_rejects_bad_date) ... ok
+test_search_rejects_non_object_json_and_null_date (test_app.WorkbenchTests.test_search_rejects_non_object_json_and_null_date) ... ok
+test_search_rejects_unavailable_route (test_app.WorkbenchTests.test_search_rejects_unavailable_route) ... ok
+test_status_matches_fixture (test_app.WorkbenchTests.test_status_matches_fixture) ... ok
+test_bm25_empty_and_deterministic_ties (test_retrieval.RetrievalTests.test_bm25_empty_and_deterministic_ties) ... ok
+test_documents_are_filtered_by_publication_date (test_retrieval.RetrievalTests.test_documents_are_filtered_by_publication_date) ... ok
+test_import_validates_citation_provenance (test_retrieval.RetrievalTests.test_import_validates_citation_provenance) ... ok
+test_malformed_manifest_is_unavailable_without_breaking_demo (test_retrieval.RetrievalTests.test_malformed_manifest_is_unavailable_without_breaking_demo) ... ok
+test_metric_examples (test_retrieval.RetrievalTests.test_metric_examples) ... ok
+test_route_evaluation_has_valid_bounded_metrics (test_retrieval.RetrievalTests.test_route_evaluation_has_valid_bounded_metrics) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.060s
+
+OK

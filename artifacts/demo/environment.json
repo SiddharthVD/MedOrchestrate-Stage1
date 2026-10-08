@@ -1,0 +1,11 @@
+{
+  "captured_on": "2026-10-08",
+  "python": "3.13.0",
+  "os": "Windows-11-10.0.26200-SP0",
+  "processor": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+  "flask": "3.1.3",
+  "total_ram_bytes": 16766066688,
+  "available_ram_bytes_at_capture": 2062299136,
+  "free_disk_bytes_at_capture": 10528604160,
+  "gpu": "Not verified: CIM/display enumeration unavailable in this environment"
+}

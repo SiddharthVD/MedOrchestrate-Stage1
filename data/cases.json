@@ -1,0 +1,32 @@
+[
+  {
+    "id": "case-diabetes-01",
+    "name": "Fictional type 2 diabetes case",
+    "description": "An adult with type 2 diabetes and reduced kidney function. All details are invented for a software demonstration.",
+    "suggested_question": "What evidence discusses glucose lowering treatment in type 2 diabetes?",
+    "facts": [
+      {"label": "Type 2 diabetes", "search_phrase": "type 2 diabetes", "available_on": "2026-01-01"},
+      {"label": "Chronic kidney disease stage 3", "search_phrase": "chronic kidney disease stage 3", "available_on": "2026-02-01"},
+      {"label": "Albuminuria", "search_phrase": "albuminuria", "available_on": "2026-09-01"}
+    ]
+  },
+  {
+    "id": "case-ckd-01",
+    "name": "Fictional chronic kidney disease case",
+    "description": "An adult with stage 3 chronic kidney disease and hypertension. All details are invented.",
+    "suggested_question": "What research addresses blood pressure management in kidney disease?",
+    "facts": [
+      {"label": "Chronic kidney disease stage 3", "search_phrase": "chronic kidney disease stage 3", "available_on": "2026-01-01"},
+      {"label": "Hypertension", "search_phrase": "hypertension blood pressure", "available_on": "2026-03-01"}
+    ]
+  },
+  {
+    "id": "case-asthma-01",
+    "name": "Fictional asthma case",
+    "description": "An adult with persistent asthma. All details are invented.",
+    "suggested_question": "What evidence discusses inhaled therapy for persistent asthma?",
+    "facts": [
+      {"label": "Persistent asthma", "search_phrase": "persistent asthma", "available_on": "2026-01-01"}
+    ]
+  }
+]

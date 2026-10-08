@@ -1,0 +1,272 @@
+{
+  "dataset": "fictional-demo-v1",
+  "annotation": "Hand-labeled relevance for invented demo records only. These judgments do not validate clinical evidence or patient outcomes.",
+  "query_count": 6,
+  "k": 5,
+  "routes": {
+    "direct_bm25": {
+      "mean_recall_at_k": 1.0,
+      "mean_mrr_at_k": 1.0,
+      "mean_ndcg_at_k": 0.9820595710244668,
+      "queries": [
+        {
+          "query_id": "Q01",
+          "executed_route": "direct_bm25",
+          "ranked_ids": [
+            "D01",
+            "D05",
+            "D09",
+            "D04",
+            "D02"
+          ],
+          "recall_at_k": 1.0,
+          "mrr_at_k": 1.0,
+          "ndcg_at_k": 0.9514426589871553
+        },
+        {
+          "query_id": "Q02",
+          "executed_route": "direct_bm25",
+          "ranked_ids": [
+            "D09",
+            "D05",
+            "D01",
+            "D06",
+            "D02"
+          ],
+          "recall_at_k": 1.0,
+          "mrr_at_k": 1.0,
+          "ndcg_at_k": 0.940914767159646
+        },
+        {
+          "query_id": "Q03",
+          "executed_route": "direct_bm25",
+          "ranked_ids": [
+            "D03",
+            "D07",
+            "D02",
+            "D11",
+            "D01"
+          ],
+          "recall_at_k": 1.0,
+          "mrr_at_k": 1.0,
+          "ndcg_at_k": 1.0
+        },
+        {
+          "query_id": "Q04",
+          "executed_route": "direct_bm25",
+          "ranked_ids": [
+            "D06",
+            "D11",
+            "D03",
+            "D02",
+            "D01"
+          ],
+          "recall_at_k": 1.0,
+          "mrr_at_k": 1.0,
+          "ndcg_at_k": 1.0
+        },
+        {
+          "query_id": "Q05",
+          "executed_route": "direct_bm25",
+          "ranked_ids": [
+            "D04",
+            "D10",
+            "D01",
+            "D11",
+            "D06"
+          ],
+          "recall_at_k": 1.0,
+          "mrr_at_k": 1.0,
+          "ndcg_at_k": 1.0
+        },
+        {
+          "query_id": "Q06",
+          "executed_route": "direct_bm25",
+          "ranked_ids": [
+            "D10",
+            "D04"
+          ],
+          "recall_at_k": 1.0,
+          "mrr_at_k": 1.0,
+          "ndcg_at_k": 1.0
+        }
+      ]
+    },
+    "expanded_bm25": {
+      "mean_recall_at_k": 0.9444444444444445,
+      "mean_mrr_at_k": 0.9166666666666666,
+      "mean_ndcg_at_k": 0.8806001775070521,
+      "queries": [
+        {
+          "query_id": "Q01",
+          "executed_route": "expanded_bm25",
+          "ranked_ids": [
+            "D01",
+            "D02",
+            "D09",
+            "D03",
+            "D11"
+          ],
+          "recall_at_k": 0.6666666666666666,
+          "mrr_at_k": 1.0,
+          "ndcg_at_k": 0.8344475896326595
+        },
+        {
+          "query_id": "Q02",
+          "executed_route": "expanded_bm25",
+          "ranked_ids": [
+            "D02",
+            "D09",
+            "D01",
+            "D03",
+            "D05"
+          ],
+          "recall_at_k": 1.0,
+          "mrr_at_k": 1.0,
+          "ndcg_at_k": 0.8213137146137828
+        },
+        {
+          "query_id": "Q03",
+          "executed_route": "expanded_bm25",
+          "ranked_ids": [
+            "D03",
+            "D07",
+            "D02",
+            "D11",
+            "D01"
+          ],
+          "recall_at_k": 1.0,
+          "mrr_at_k": 1.0,
+          "ndcg_at_k": 1.0
+        },
+        {
+          "query_id": "Q04",
+          "executed_route": "expanded_bm25",
+          "ranked_ids": [
+            "D03",
+            "D06",
+            "D07",
+            "D02",
+            "D11"
+          ],
+          "recall_at_k": 1.0,
+          "mrr_at_k": 0.5,
+          "ndcg_at_k": 0.6278397607958708
+        },
+        {
+          "query_id": "Q05",
+          "executed_route": "expanded_bm25",
+          "ranked_ids": [
+            "D04",
+            "D10",
+            "D01",
+            "D11",
+            "D06"
+          ],
+          "recall_at_k": 1.0,
+          "mrr_at_k": 1.0,
+          "ndcg_at_k": 1.0
+        },
+        {
+          "query_id": "Q06",
+          "executed_route": "expanded_bm25",
+          "ranked_ids": [
+            "D10",
+            "D04"
+          ],
+          "recall_at_k": 1.0,
+          "mrr_at_k": 1.0,
+          "ndcg_at_k": 1.0
+        }
+      ]
+    },
+    "adaptive": {
+      "mean_recall_at_k": 0.9444444444444445,
+      "mean_mrr_at_k": 0.9166666666666666,
+      "mean_ndcg_at_k": 0.8806001775070521,
+      "queries": [
+        {
+          "query_id": "Q01",
+          "executed_route": "expanded_bm25",
+          "ranked_ids": [
+            "D01",
+            "D02",
+            "D09",
+            "D03",
+            "D11"
+          ],
+          "recall_at_k": 0.6666666666666666,
+          "mrr_at_k": 1.0,
+          "ndcg_at_k": 0.8344475896326595
+        },
+        {
+          "query_id": "Q02",
+          "executed_route": "expanded_bm25",
+          "ranked_ids": [
+            "D02",
+            "D09",
+            "D01",
+            "D03",
+            "D05"
+          ],
+          "recall_at_k": 1.0,
+          "mrr_at_k": 1.0,
+          "ndcg_at_k": 0.8213137146137828
+        },
+        {
+          "query_id": "Q03",
+          "executed_route": "expanded_bm25",
+          "ranked_ids": [
+            "D03",
+            "D07",
+            "D02",
+            "D11",
+            "D01"
+          ],
+          "recall_at_k": 1.0,
+          "mrr_at_k": 1.0,
+          "ndcg_at_k": 1.0
+        },
+        {
+          "query_id": "Q04",
+          "executed_route": "expanded_bm25",
+          "ranked_ids": [
+            "D03",
+            "D06",
+            "D07",
+            "D02",
+            "D11"
+          ],
+          "recall_at_k": 1.0,
+          "mrr_at_k": 0.5,
+          "ndcg_at_k": 0.6278397607958708
+        },
+        {
+          "query_id": "Q05",
+          "executed_route": "expanded_bm25",
+          "ranked_ids": [
+            "D04",
+            "D10",
+            "D01",
+            "D11",
+            "D06"
+          ],
+          "recall_at_k": 1.0,
+          "mrr_at_k": 1.0,
+          "ndcg_at_k": 1.0
+        },
+        {
+          "query_id": "Q06",
+          "executed_route": "expanded_bm25",
+          "ranked_ids": [
+            "D10",
+            "D04"
+          ],
+          "recall_at_k": 1.0,
+          "mrr_at_k": 1.0,
+          "ndcg_at_k": 1.0
+        }
+      ]
+    }
+  }
+}

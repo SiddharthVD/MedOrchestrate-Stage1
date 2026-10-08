@@ -1,0 +1,588 @@
+{
+  "search": {
+    "as_of": "2026-10-08",
+    "case_id": "case-diabetes-01",
+    "executed_route": "expanded_bm25",
+    "query_used": "What evidence discusses glucose lowering treatment in type 2 diabetes? chronic kidney disease stage 3 albuminuria",
+    "question": "What evidence discusses glucose lowering treatment in type 2 diabetes?",
+    "requested_route": "adaptive",
+    "results": [
+      {
+        "abstract": "Overview of glucose lowering treatment questions when type 2 diabetes and chronic kidney disease coexist. Discusses kidney outcomes and uncertainty.",
+        "fixture": true,
+        "id": "D01",
+        "published_on": null,
+        "score": 14.9209,
+        "source": "Fictional demo record",
+        "source_type": null,
+        "title": "Glucose lowering options in type 2 diabetes and kidney disease",
+        "url": null,
+        "year": 2024
+      },
+      {
+        "abstract": "A fictional summary covering albuminuria, chronic kidney disease stage 3, and evidence gaps in diabetes populations.",
+        "fixture": true,
+        "id": "D02",
+        "published_on": null,
+        "score": 9.9661,
+        "source": "Fictional demo record",
+        "source_type": null,
+        "title": "Albuminuria and chronic kidney disease research priorities",
+        "url": null,
+        "year": 2023
+      },
+      {
+        "abstract": "Fictional research summary on type 2 diabetes medicines and kidney outcomes in patients with albuminuria.",
+        "fixture": true,
+        "id": "D09",
+        "published_on": null,
+        "score": 6.8024,
+        "source": "Fictional demo record",
+        "source_type": null,
+        "title": "Diabetes medicines and kidney outcomes",
+        "url": null,
+        "year": 2024
+      },
+      {
+        "abstract": "Research overview of hypertension and blood pressure management in adults with chronic kidney disease stage 3.",
+        "fixture": true,
+        "id": "D03",
+        "published_on": null,
+        "score": 5.9878,
+        "source": "Fictional demo record",
+        "source_type": null,
+        "title": "Blood pressure management in chronic kidney disease",
+        "url": null,
+        "year": 2022
+      },
+      {
+        "abstract": "A fictional methods note on chronic kidney disease endpoints and evidence interpretation.",
+        "fixture": true,
+        "id": "D11",
+        "published_on": null,
+        "score": 4.5371,
+        "source": "Fictional demo record",
+        "source_type": null,
+        "title": "Trial design for chronic kidney disease",
+        "url": null,
+        "year": 2021
+      },
+      {
+        "abstract": "Research questions about exercise, cardiovascular risk, and adults living with type 2 diabetes.",
+        "fixture": true,
+        "id": "D05",
+        "published_on": null,
+        "score": 4.155,
+        "source": "Fictional demo record",
+        "source_type": null,
+        "title": "Exercise and cardiovascular risk in diabetes",
+        "url": null,
+        "year": 2020
+      },
+      {
+        "abstract": "An invented record on adherence and research methods for chronic disease treatment studies.",
+        "fixture": true,
+        "id": "D08",
+        "published_on": null,
+        "score": 3.6648,
+        "source": "Fictional demo record",
+        "source_type": null,
+        "title": "Treatment adherence in long term conditions",
+        "url": null,
+        "year": 2018
+      },
+      {
+        "abstract": "Fictional evidence note about estimated kidney function, stage changes, and longitudinal monitoring.",
+        "fixture": true,
+        "id": "D06",
+        "published_on": null,
+        "score": 3.3066,
+        "source": "Fictional demo record",
+        "source_type": null,
+        "title": "Monitoring kidney function over time",
+        "url": null,
+        "year": 2019
+      },
+      {
+        "abstract": "A fictional overview of inhaled treatment evidence and symptom outcomes in persistent asthma.",
+        "fixture": true,
+        "id": "D04",
+        "published_on": null,
+        "score": 2.5556,
+        "source": "Fictional demo record",
+        "source_type": null,
+        "title": "Inhaled therapy for persistent asthma",
+        "url": null,
+        "year": 2021
+      }
+    ],
+    "trace": {
+      "added_terms": [
+        "chronic",
+        "kidney",
+        "disease",
+        "stage",
+        "3",
+        "albuminuria"
+      ],
+      "available_facts": [
+        "Type 2 diabetes",
+        "Chronic kidney disease stage 3",
+        "Albuminuria"
+      ],
+      "calls": {
+        "probe": 0,
+        "rerank": 0,
+        "retrieval": 1,
+        "rewrite": 0
+      },
+      "corpus": "fictional-demo-v1",
+      "elapsed_ms": 0.502,
+      "eligible_documents": 12,
+      "rationale": "Rule selected expansion for a short question with available patient facts.",
+      "result_count": 9
+    }
+  },
+  "status": {
+    "available_corpora": [
+      "fictional-demo-v1"
+    ],
+    "available_routes": [
+      "direct_bm25",
+      "expanded_bm25",
+      "adaptive"
+    ],
+    "cases": 3,
+    "corpus": "fictional-demo-v1",
+    "documents": 12,
+    "evaluation": "fictional fixture qrels; no clinical validation",
+    "project": "MedOrchestrate",
+    "unavailable_routes": [
+      "dense",
+      "hybrid",
+      "base_rewrite",
+      "lora_rewrite"
+    ]
+  },
+  "compare": {
+    "as_of": "2026-10-08",
+    "case_id": "case-diabetes-01",
+    "comparisons": {
+      "adaptive": {
+        "as_of": "2026-10-08",
+        "case_id": "case-diabetes-01",
+        "executed_route": "expanded_bm25",
+        "query_used": "What evidence discusses glucose lowering treatment in type 2 diabetes? chronic kidney disease stage 3 albuminuria",
+        "question": "What evidence discusses glucose lowering treatment in type 2 diabetes?",
+        "requested_route": "adaptive",
+        "results": [
+          {
+            "abstract": "Overview of glucose lowering treatment questions when type 2 diabetes and chronic kidney disease coexist. Discusses kidney outcomes and uncertainty.",
+            "fixture": true,
+            "id": "D01",
+            "published_on": null,
+            "score": 14.9209,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Glucose lowering options in type 2 diabetes and kidney disease",
+            "url": null,
+            "year": 2024
+          },
+          {
+            "abstract": "A fictional summary covering albuminuria, chronic kidney disease stage 3, and evidence gaps in diabetes populations.",
+            "fixture": true,
+            "id": "D02",
+            "published_on": null,
+            "score": 9.9661,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Albuminuria and chronic kidney disease research priorities",
+            "url": null,
+            "year": 2023
+          },
+          {
+            "abstract": "Fictional research summary on type 2 diabetes medicines and kidney outcomes in patients with albuminuria.",
+            "fixture": true,
+            "id": "D09",
+            "published_on": null,
+            "score": 6.8024,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Diabetes medicines and kidney outcomes",
+            "url": null,
+            "year": 2024
+          },
+          {
+            "abstract": "Research overview of hypertension and blood pressure management in adults with chronic kidney disease stage 3.",
+            "fixture": true,
+            "id": "D03",
+            "published_on": null,
+            "score": 5.9878,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Blood pressure management in chronic kidney disease",
+            "url": null,
+            "year": 2022
+          },
+          {
+            "abstract": "A fictional methods note on chronic kidney disease endpoints and evidence interpretation.",
+            "fixture": true,
+            "id": "D11",
+            "published_on": null,
+            "score": 4.5371,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Trial design for chronic kidney disease",
+            "url": null,
+            "year": 2021
+          },
+          {
+            "abstract": "Research questions about exercise, cardiovascular risk, and adults living with type 2 diabetes.",
+            "fixture": true,
+            "id": "D05",
+            "published_on": null,
+            "score": 4.155,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Exercise and cardiovascular risk in diabetes",
+            "url": null,
+            "year": 2020
+          },
+          {
+            "abstract": "An invented record on adherence and research methods for chronic disease treatment studies.",
+            "fixture": true,
+            "id": "D08",
+            "published_on": null,
+            "score": 3.6648,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Treatment adherence in long term conditions",
+            "url": null,
+            "year": 2018
+          },
+          {
+            "abstract": "Fictional evidence note about estimated kidney function, stage changes, and longitudinal monitoring.",
+            "fixture": true,
+            "id": "D06",
+            "published_on": null,
+            "score": 3.3066,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Monitoring kidney function over time",
+            "url": null,
+            "year": 2019
+          },
+          {
+            "abstract": "A fictional overview of inhaled treatment evidence and symptom outcomes in persistent asthma.",
+            "fixture": true,
+            "id": "D04",
+            "published_on": null,
+            "score": 2.5556,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Inhaled therapy for persistent asthma",
+            "url": null,
+            "year": 2021
+          }
+        ],
+        "trace": {
+          "added_terms": [
+            "chronic",
+            "kidney",
+            "disease",
+            "stage",
+            "3",
+            "albuminuria"
+          ],
+          "available_facts": [
+            "Type 2 diabetes",
+            "Chronic kidney disease stage 3",
+            "Albuminuria"
+          ],
+          "calls": {
+            "probe": 0,
+            "rerank": 0,
+            "retrieval": 1,
+            "rewrite": 0
+          },
+          "corpus": "fictional-demo-v1",
+          "elapsed_ms": 0.257,
+          "eligible_documents": 12,
+          "rationale": "Rule selected expansion for a short question with available patient facts.",
+          "result_count": 9
+        }
+      },
+      "direct_bm25": {
+        "as_of": "2026-10-08",
+        "case_id": "case-diabetes-01",
+        "executed_route": "direct_bm25",
+        "query_used": "What evidence discusses glucose lowering treatment in type 2 diabetes?",
+        "question": "What evidence discusses glucose lowering treatment in type 2 diabetes?",
+        "requested_route": "direct_bm25",
+        "results": [
+          {
+            "abstract": "Overview of glucose lowering treatment questions when type 2 diabetes and chronic kidney disease coexist. Discusses kidney outcomes and uncertainty.",
+            "fixture": true,
+            "id": "D01",
+            "published_on": null,
+            "score": 12.2447,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Glucose lowering options in type 2 diabetes and kidney disease",
+            "url": null,
+            "year": 2024
+          },
+          {
+            "abstract": "Research questions about exercise, cardiovascular risk, and adults living with type 2 diabetes.",
+            "fixture": true,
+            "id": "D05",
+            "published_on": null,
+            "score": 4.155,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Exercise and cardiovascular risk in diabetes",
+            "url": null,
+            "year": 2020
+          },
+          {
+            "abstract": "Fictional research summary on type 2 diabetes medicines and kidney outcomes in patients with albuminuria.",
+            "fixture": true,
+            "id": "D09",
+            "published_on": null,
+            "score": 4.155,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Diabetes medicines and kidney outcomes",
+            "url": null,
+            "year": 2024
+          },
+          {
+            "abstract": "A fictional overview of inhaled treatment evidence and symptom outcomes in persistent asthma.",
+            "fixture": true,
+            "id": "D04",
+            "published_on": null,
+            "score": 2.5556,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Inhaled therapy for persistent asthma",
+            "url": null,
+            "year": 2021
+          },
+          {
+            "abstract": "A fictional summary covering albuminuria, chronic kidney disease stage 3, and evidence gaps in diabetes populations.",
+            "fixture": true,
+            "id": "D02",
+            "published_on": null,
+            "score": 1.9566,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Albuminuria and chronic kidney disease research priorities",
+            "url": null,
+            "year": 2023
+          },
+          {
+            "abstract": "An invented record on adherence and research methods for chronic disease treatment studies.",
+            "fixture": true,
+            "id": "D08",
+            "published_on": null,
+            "score": 1.8625,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Treatment adherence in long term conditions",
+            "url": null,
+            "year": 2018
+          },
+          {
+            "abstract": "A fictional methods note on chronic kidney disease endpoints and evidence interpretation.",
+            "fixture": true,
+            "id": "D11",
+            "published_on": null,
+            "score": 1.1114,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Trial design for chronic kidney disease",
+            "url": null,
+            "year": 2021
+          },
+          {
+            "abstract": "Fictional evidence note about estimated kidney function, stage changes, and longitudinal monitoring.",
+            "fixture": true,
+            "id": "D06",
+            "published_on": null,
+            "score": 1.054,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Monitoring kidney function over time",
+            "url": null,
+            "year": 2019
+          }
+        ],
+        "trace": {
+          "added_terms": [],
+          "available_facts": [
+            "Type 2 diabetes",
+            "Chronic kidney disease stage 3",
+            "Albuminuria"
+          ],
+          "calls": {
+            "probe": 0,
+            "rerank": 0,
+            "retrieval": 1,
+            "rewrite": 0
+          },
+          "corpus": "fictional-demo-v1",
+          "elapsed_ms": 0.265,
+          "eligible_documents": 12,
+          "rationale": "User selected a fixed route.",
+          "result_count": 8
+        }
+      },
+      "expanded_bm25": {
+        "as_of": "2026-10-08",
+        "case_id": "case-diabetes-01",
+        "executed_route": "expanded_bm25",
+        "query_used": "What evidence discusses glucose lowering treatment in type 2 diabetes? chronic kidney disease stage 3 albuminuria",
+        "question": "What evidence discusses glucose lowering treatment in type 2 diabetes?",
+        "requested_route": "expanded_bm25",
+        "results": [
+          {
+            "abstract": "Overview of glucose lowering treatment questions when type 2 diabetes and chronic kidney disease coexist. Discusses kidney outcomes and uncertainty.",
+            "fixture": true,
+            "id": "D01",
+            "published_on": null,
+            "score": 14.9209,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Glucose lowering options in type 2 diabetes and kidney disease",
+            "url": null,
+            "year": 2024
+          },
+          {
+            "abstract": "A fictional summary covering albuminuria, chronic kidney disease stage 3, and evidence gaps in diabetes populations.",
+            "fixture": true,
+            "id": "D02",
+            "published_on": null,
+            "score": 9.9661,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Albuminuria and chronic kidney disease research priorities",
+            "url": null,
+            "year": 2023
+          },
+          {
+            "abstract": "Fictional research summary on type 2 diabetes medicines and kidney outcomes in patients with albuminuria.",
+            "fixture": true,
+            "id": "D09",
+            "published_on": null,
+            "score": 6.8024,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Diabetes medicines and kidney outcomes",
+            "url": null,
+            "year": 2024
+          },
+          {
+            "abstract": "Research overview of hypertension and blood pressure management in adults with chronic kidney disease stage 3.",
+            "fixture": true,
+            "id": "D03",
+            "published_on": null,
+            "score": 5.9878,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Blood pressure management in chronic kidney disease",
+            "url": null,
+            "year": 2022
+          },
+          {
+            "abstract": "A fictional methods note on chronic kidney disease endpoints and evidence interpretation.",
+            "fixture": true,
+            "id": "D11",
+            "published_on": null,
+            "score": 4.5371,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Trial design for chronic kidney disease",
+            "url": null,
+            "year": 2021
+          },
+          {
+            "abstract": "Research questions about exercise, cardiovascular risk, and adults living with type 2 diabetes.",
+            "fixture": true,
+            "id": "D05",
+            "published_on": null,
+            "score": 4.155,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Exercise and cardiovascular risk in diabetes",
+            "url": null,
+            "year": 2020
+          },
+          {
+            "abstract": "An invented record on adherence and research methods for chronic disease treatment studies.",
+            "fixture": true,
+            "id": "D08",
+            "published_on": null,
+            "score": 3.6648,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Treatment adherence in long term conditions",
+            "url": null,
+            "year": 2018
+          },
+          {
+            "abstract": "Fictional evidence note about estimated kidney function, stage changes, and longitudinal monitoring.",
+            "fixture": true,
+            "id": "D06",
+            "published_on": null,
+            "score": 3.3066,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Monitoring kidney function over time",
+            "url": null,
+            "year": 2019
+          },
+          {
+            "abstract": "A fictional overview of inhaled treatment evidence and symptom outcomes in persistent asthma.",
+            "fixture": true,
+            "id": "D04",
+            "published_on": null,
+            "score": 2.5556,
+            "source": "Fictional demo record",
+            "source_type": null,
+            "title": "Inhaled therapy for persistent asthma",
+            "url": null,
+            "year": 2021
+          }
+        ],
+        "trace": {
+          "added_terms": [
+            "chronic",
+            "kidney",
+            "disease",
+            "stage",
+            "3",
+            "albuminuria"
+          ],
+          "available_facts": [
+            "Type 2 diabetes",
+            "Chronic kidney disease stage 3",
+            "Albuminuria"
+          ],
+          "calls": {
+            "probe": 0,
+            "rerank": 0,
+            "retrieval": 1,
+            "rewrite": 0
+          },
+          "corpus": "fictional-demo-v1",
+          "elapsed_ms": 0.267,
+          "eligible_documents": 12,
+          "rationale": "User selected a fixed route.",
+          "result_count": 9
+        }
+      }
+    },
+    "corpus": "fictional-demo-v1",
+    "question": "What evidence discusses glucose lowering treatment in type 2 diabetes?"
+  }
+}

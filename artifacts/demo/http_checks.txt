@@ -1,0 +1,9 @@
+/ 200 8872
+/static/app.js 200 20091
+/static/style.css 200 11980
+/api/status 200 320
+/api/cases 200 773
+/api/corpora 200 158
+/api/evaluation 200 3297
+/api/search 200 route=expanded_bm25 top=D01
+/api/compare 200 routes=adaptive,direct_bm25,expanded_bm25
