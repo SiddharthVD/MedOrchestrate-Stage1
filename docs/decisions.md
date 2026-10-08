@@ -5,3 +5,5 @@
 - 2026-10-08: Kept retrieval CPU friendly and dependency light. Dense models and training wait for data, hardware, and protocol checks.
 - 2026-10-08: Added hand-labeled judgments for invented records solely to exercise retrieval metrics. They cannot support a research claim.
 - 2026-10-08: Run the local server through `start.cmd` or `python launch.py`; the server must remain running for the workbench URL to load.
+- 2026-10-09: Publish the requested public demonstration from a new `MedOrchestrate-Stage1` repository. Preserve the existing private `medOrchestrate` repository, which contains another one-file college project.
+- 2026-10-09: GitHub Pages is static, so implement the fictional workbench in browser-side JavaScript while retaining Flask and local import in the repository. Gate deployment on Python and static smoke checks.

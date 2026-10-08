@@ -1,0 +1,12 @@
+{
+  "dataset": "fictional-demo-v1",
+  "annotation": "Hand-labeled relevance for invented demo records only. These judgments do not validate clinical evidence or patient outcomes.",
+  "queries": [
+    {"id":"Q01","case_id":"case-diabetes-01","as_of":"2026-10-08","question":"What evidence discusses glucose lowering treatment in type 2 diabetes?","relevance":{"D01":2,"D09":2,"D05":1}},
+    {"id":"Q02","case_id":"case-diabetes-01","as_of":"2026-10-08","question":"What is known about kidney outcomes in diabetes?","relevance":{"D09":2,"D01":1,"D02":1}},
+    {"id":"Q03","case_id":"case-ckd-01","as_of":"2026-10-08","question":"What research addresses blood pressure management in kidney disease?","relevance":{"D03":2,"D07":1}},
+    {"id":"Q04","case_id":"case-ckd-01","as_of":"2026-10-08","question":"How is chronic kidney disease monitored over time?","relevance":{"D06":2,"D11":1}},
+    {"id":"Q05","case_id":"case-asthma-01","as_of":"2026-10-08","question":"What evidence discusses inhaled therapy for persistent asthma?","relevance":{"D04":2,"D10":2}},
+    {"id":"Q06","case_id":"case-asthma-01","as_of":"2026-10-08","question":"How are asthma symptoms measured?","relevance":{"D10":2,"D04":1}}
+  ]
+}

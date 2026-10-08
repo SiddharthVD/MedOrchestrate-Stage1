@@ -1,6 +1,8 @@
 # MedOrchestrate
 
-Local Stage 1 prototype of a patient aware medical literature retrieval workbench. It uses fictional cases and invented evidence records to demonstrate route selection, ranking, and execution traces. It is **not** a clinical tool or a validated retrieval benchmark.
+Stage 1 prototype of a patient aware medical literature retrieval workbench. It uses fictional cases and invented evidence records to demonstrate route selection, ranking, and execution traces. It is **not** a clinical tool or a validated retrieval benchmark.
+
+Read the [project guide](docs/PROJECT_GUIDE.md) for the purpose, implemented scope, limitations, future research gates, and next steps. The public `site/` edition runs entirely in the browser with the fictional fixture; the local Flask workbench includes the API and command-line citation import.
 
 ## Run locally
 
@@ -19,6 +21,7 @@ Run the included checks:
 
 ```powershell
 python -m unittest discover -s tests -v
+node site/smoke.mjs
 ```
 
 ## Demonstration
