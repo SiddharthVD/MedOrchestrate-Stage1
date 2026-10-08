@@ -1,0 +1,105 @@
+{
+  "dataset": "nfcorpus",
+  "edition": "BEIR transformed NFCorpus (2021-01-15 archive)",
+  "split": "test",
+  "judged_query_count": 323,
+  "document_count": 3633,
+  "k": 10,
+  "binary_relevance_threshold": ">0",
+  "ndcg": "graded",
+  "primary_metric": "ndcg@10",
+  "model": "sentence-transformers/all-MiniLM-L6-v2",
+  "base_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+  "trained_weights_sha256": "88a0c961694979e2b8c12ba6281a831302966392f63e8f49267005eea22b76da",
+  "file_sha256": {
+    "corpus.jsonl": "10cc83ef1826b1425e6a87090b5140b39b27755d5a27e48215a88611c899991f",
+    "queries.jsonl": "d024e6621b84925d485ae473d316a0c3af31c62c8068a59fb29d22f7613aef2a",
+    "qrels/test.tsv": "f8fba6ef3d4dd9c3a242a8ba4ae38276fc3622fce7dcbae764766d564542fd2a",
+    "qrels/train.tsv": "6336b80f9bffc4f063f3aa450047ad35c0b7c534efe4a6ba35e16dbace047f6a",
+    "qrels/dev.tsv": "b1d38b5e8f78c4a5820bce2b7ec2db54911d7690dc601e76811846b211180bd8"
+  },
+  "times_seconds": {
+    "bm25_index_and_search": 0.9015800999986823,
+    "untuned_encode_and_search": 69.45580759999575,
+    "trained_encode_and_search": 67.80263700000069
+  },
+  "routes": {
+    "bm25": {
+      "metrics": {
+        "recall": 0.1517577679596505,
+        "mrr": 0.5154774190377905,
+        "ndcg": 0.30996294534532576
+      },
+      "run_sha256": "315ddc86b6a4f90d9323547d3b08f37d2ddd573fde31009f2ed5cf22ed585eb7"
+    },
+    "untuned_dense": {
+      "metrics": {
+        "recall": 0.15369212102238455,
+        "mrr": 0.5128237259816207,
+        "ndcg": 0.3154894996975974
+      },
+      "run_sha256": "047a63cf54fd4c19d194a6673d17992b90d9cec593c004fdc66d2aadc263cc00"
+    },
+    "trained_dense": {
+      "metrics": {
+        "recall": 0.16267439367544526,
+        "mrr": 0.5023268956705489,
+        "ndcg": 0.31947582022804727
+      },
+      "run_sha256": "c2e4b99c6db33e35d518ed9ef50ce269c5b60958ac0c440b265e18dd59571ff3"
+    },
+    "bm25_trained_dense_rrf60": {
+      "metrics": {
+        "recall": 0.1692592185281313,
+        "mrr": 0.5414541255098531,
+        "ndcg": 0.34018100703942517
+      },
+      "run_sha256": "d19177accc0380f3ed2f0134c80b3b660541fbea758b316e681415f584960f84"
+    }
+  },
+  "paired_ndcg_vs_bm25": {
+    "untuned_dense": {
+      "mean_delta": 0.0055265543522715985,
+      "bootstrap_95_percent_interval": [
+        -0.019007117108615523,
+        0.02820130389659898
+      ],
+      "query_wins": 121,
+      "query_losses": 98,
+      "query_ties": 104
+    },
+    "trained_dense": {
+      "mean_delta": 0.009512874882721536,
+      "bootstrap_95_percent_interval": [
+        -0.013840247030176988,
+        0.03275037053364603
+      ],
+      "query_wins": 117,
+      "query_losses": 98,
+      "query_ties": 108
+    },
+    "bm25_trained_dense_rrf60": {
+      "mean_delta": 0.030218061694099352,
+      "bootstrap_95_percent_interval": [
+        0.01648584501541246,
+        0.04322603520650781
+      ],
+      "query_wins": 113,
+      "query_losses": 79,
+      "query_ties": 131
+    }
+  },
+  "selection": {
+    "selected_route": "bm25_trained_dense_rrf60",
+    "primary_metric": "ndcg@10",
+    "dev_metric": 0.31496747839190015,
+    "weights_sha256": "88a0c961694979e2b8c12ba6281a831302966392f63e8f49267005eea22b76da",
+    "dataset_file_sha256": {
+      "corpus.jsonl": "10cc83ef1826b1425e6a87090b5140b39b27755d5a27e48215a88611c899991f",
+      "queries.jsonl": "d024e6621b84925d485ae473d316a0c3af31c62c8068a59fb29d22f7613aef2a",
+      "qrels/test.tsv": "f8fba6ef3d4dd9c3a242a8ba4ae38276fc3622fce7dcbae764766d564542fd2a",
+      "qrels/train.tsv": "6336b80f9bffc4f063f3aa450047ad35c0b7c534efe4a6ba35e16dbace047f6a",
+      "qrels/dev.tsv": "b1d38b5e8f78c4a5820bce2b7ec2db54911d7690dc601e76811846b211180bd8"
+    }
+  }
+}

@@ -1,10 +1,10 @@
 # MedOrchestrate static demonstration
 
-This directory is a browser-only version of the five-view workbench for GitHub Pages. It runs direct BM25, deterministic case-fact expansion, adaptive rule selection, route comparison, and fixture evaluation in JavaScript. It fetches only the three committed JSON files in `data/`; no Python process or external API is required.
+This directory is a browser-only version of the five-view workbench for GitHub Pages. It runs direct BM25, deterministic case-fact expansion, adaptive rule selection, route comparison, and fixture evaluation in JavaScript. It fetches the three fictional fixture files and two aggregate research summaries in `data/`; no Python process or external API is required.
 
 All cases, records, and relevance judgments are invented. The metrics demonstrate software behavior only. Local citation import via CLI is available in the Flask project, not on this public static site.
 
-The Evaluation view also shows a separate read-only Stage 2 checkpoint: aggregate counts and fixed direct BM25 metrics from the real BEIR NFCorpus test split. The only Stage 2 data in this directory is `data/benchmark_summary.json`. The corpus, query text, judgments, and per-query run files remain local. The card links to the public research protocol in the repository.
+The Evaluation view also shows separate read-only real-data checkpoints: Stage 2 direct BM25 metrics and the later trained MiniLM comparison from the BEIR NFCorpus test split. The only real-data results in this directory are aggregate JSON summaries. The corpus, query text, judgments, raw rankings, and model weights remain local. The browser demo does not execute the trained model; each card links to its research protocol or report.
 
 To verify the committed fixture and retrieval behavior from the project root:
 

@@ -1,5 +1,7 @@
 # Real-data model training plan
 
+The first local CPU run and locked NFCorpus comparison are complete; see [the actual training report](TRAINING_RUN.md). The patient-aware dataset and controller gates below remain future work.
+
 ## Goal and claim boundary
 
 Train a small **bi-encoder retriever** to rank medical literature for NFCorpus questions, compare it with the frozen direct BM25 baseline, and then decide whether more complex retrieval is justified. This experiment measures literature retrieval. NFCorpus has no dated patient cases or patient-specific relevance judgments, so it cannot validate the project's patient-aware controller or clinical use.

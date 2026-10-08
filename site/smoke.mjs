@@ -14,6 +14,8 @@ const cases = read('cases.json');
 const documents = read('documents.json');
 const qrels = read('demo_qrels.json');
 const benchmarkSummary = read('benchmark_summary.json');
+const trainingSummary = read('training_summary.json');
+const trainingReport = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'artifacts', 'training', 'test-aggregate.json'), 'utf8'));
 const diabetes = cases.find(row => row.id === 'case-diabetes-01');
 const question = diabetes.suggested_question;
 
@@ -86,6 +88,17 @@ assert.ok(Math.abs(benchmarkSummary.metrics[0].mean_recall_at_k - 0.120005999490
 assert.ok(Math.abs(benchmarkSummary.metrics[1].mean_ndcg_at_k - 0.30996294534532576) < 1e-12);
 const publicSummary = JSON.stringify(benchmarkSummary);
 assert.doesNotMatch(publicSummary, /corpus\.jsonl|queries\.jsonl|qrels\/|run_manifest|ranked_ids|query_text/);
+assert.equal(trainingSummary.dataset, 'nfcorpus');
+assert.equal(trainingSummary.split, 'test');
+assert.equal(trainingSummary.judged_query_count, 323);
+assert.equal(trainingSummary.trained_pair_count, 509);
+assert.equal(trainingSummary.selected_route, trainingReport.selection.selected_route);
+assert.equal(trainingSummary.k, 10);
+for (const [route, metrics] of Object.entries(trainingSummary.metrics)) {
+  assert.deepEqual(metrics, trainingReport.routes[route].metrics);
+}
+assert.doesNotMatch(JSON.stringify(trainingSummary), /corpus\.jsonl|queries\.jsonl|qrels\/|ranked_ids|query_text|run_sha256|weights_sha256/);
 const page = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
 assert.match(page, /https:\/\/github\.com\/SiddharthVD\/MedOrchestrate-Stage1\/blob\/main\/research\/STAGE2_PROTOCOL\.md/);
-console.log('Static demo smoke passed: five-view fixture, UI adapter, and aggregate-only Stage 2 summary.');
+assert.match(page, /https:\/\/github\.com\/SiddharthVD\/MedOrchestrate-Stage1\/blob\/main\/research\/TRAINING_RUN\.md/);
+console.log('Static demo smoke passed: five-view fixture and aggregate-only real-data research summaries.');

@@ -10,8 +10,9 @@
 | COMPLETED | Public Stage 1 demo | Pages workflow passed; live search and 4/4 diagnostic checks verified in browser |
 | COMPLETED | Real corpus and compatible qrels | NFCorpus source/rights note, pinned archive and file hashes, disjoint splits, local manifest |
 | COMPLETED | Fixed lexical benchmark | Direct BM25 TREC run and aggregate test Recall/MRR/nDCG at 5 and 10 |
-| PLANNED | Train small real-data bi-encoder | `research/TRAINING_PLAN.md`; implementation, actual weights, and measured results pending |
-| BACKLOG | Dense and hybrid fixed baselines | Repeatable rankings with matched budget |
+| COMPLETED | First real-data bi-encoder feasibility run | 509 positive train pairs, saved local weights, frozen dev selection and test comparison; `research/TRAINING_RUN.md` |
+| BACKLOG | Broader training and independent holdout | More train queries, repeated seeds, external holdout, rights and cost review |
+| COMPLETED | First dense and hybrid fixed comparators | Repeatable NFCorpus dev/test rankings and aggregate metrics; end-to-end cost accounting remains |
 | BACKLOG | Learned cost aware controller | Disjoint splits and full call accounting |
 | BACKLOG | Base and LoRA query rewriting | Feasible local model and actual adapter weights |
 | BACKLOG | Formal experiments and paper | Frozen runs, uncertainty, ablations, citations |

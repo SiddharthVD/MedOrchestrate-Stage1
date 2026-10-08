@@ -1,0 +1,39 @@
+{
+  "dataset": "nfcorpus",
+  "split": "train",
+  "input_file_sha256": {
+    "corpus.jsonl": "10cc83ef1826b1425e6a87090b5140b39b27755d5a27e48215a88611c899991f",
+    "queries.jsonl": "d024e6621b84925d485ae473d316a0c3af31c62c8068a59fb29d22f7613aef2a",
+    "qrels/test.tsv": "f8fba6ef3d4dd9c3a242a8ba4ae38276fc3622fce7dcbae764766d564542fd2a",
+    "qrels/train.tsv": "6336b80f9bffc4f063f3aa450047ad35c0b7c534efe4a6ba35e16dbace047f6a",
+    "qrels/dev.tsv": "b1d38b5e8f78c4a5820bce2b7ec2db54911d7690dc601e76811846b211180bd8"
+  },
+  "train_query_count": 2590,
+  "dev_query_count": 324,
+  "test_query_count": 323,
+  "sampled_query_count": 512,
+  "trained_pair_count": 509,
+  "steps": 81,
+  "batch_size": 8,
+  "seed": 42,
+  "epochs": 1,
+  "learning_rate": 2e-05,
+  "max_seq_length": 128,
+  "document_text": "title + space + text",
+  "query_text": "raw query text",
+  "loss": "in_batch_multiple_negatives_cosine_cross_entropy_scale_20",
+  "negative_note": "Only known train positives are screened; other in-batch pairs may be unlabeled positives.",
+  "base_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "base_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+  "base_license": "Apache-2.0",
+  "packages": {
+    "python": "3.13.0",
+    "torch": "2.14.1+cpu",
+    "sentence_transformers": "5.1.2",
+    "numpy": "2.5.3"
+  },
+  "device": "cpu",
+  "training_seconds": 77.91848590000154,
+  "mean_training_loss": 1.3529255617823865,
+  "weights_sha256": "88a0c961694979e2b8c12ba6281a831302966392f63e8f49267005eea22b76da"
+}

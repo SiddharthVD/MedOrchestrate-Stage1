@@ -1,0 +1,8 @@
+# Optional local real-data training environment; core workbench needs only requirements.txt.
+-r requirements.txt
+sentence-transformers==5.1.2
+scikit-learn==1.7.2
+torch==2.14.1
+transformers==4.57.6
+huggingface-hub==0.36.2
+numpy==2.5.3

@@ -1,6 +1,6 @@
 # MedOrchestrate
 
-Research prototype of a patient aware medical literature retrieval workbench. Stage 1 uses fictional cases and invented evidence records to demonstrate route selection, ranking, and execution traces. Stage 2 adds a real, locally evaluated fixed BM25 baseline on NFCorpus. It is **not** a clinical tool or a validated patient-aware retrieval system.
+Research prototype of a patient aware medical literature retrieval workbench. Stage 1 uses fictional cases and invented evidence records to demonstrate route selection, ranking, and execution traces. Stage 2 adds a real, locally evaluated fixed BM25 baseline on NFCorpus. A subsequent local experiment trained a small MiniLM retriever on NFCorpus train judgments and compared it with BM25 and a fixed hybrid. It is **not** a clinical tool or a validated patient-aware retrieval system.
 
 Read the [project guide](docs/PROJECT_GUIDE.md) for the purpose, implemented scope, limitations, future research gates, and next steps. The public `site/` edition runs entirely in the browser with the fictional fixture; the local Flask workbench includes the API and command-line citation import.
 
@@ -30,7 +30,7 @@ node site/smoke.mjs
 
 Select **Fictional type 2 diabetes case**. Keep the date at `2026-10-08`. In Medical Evidence Search, run the suggested question with the adaptive rule. The rule expands a short query with available case facts and executes BM25 over 12 invented records. Inspect the ranked results and trace. Strategy Comparison runs direct BM25 and the adaptive route on the same input.
 
-The fixture records deliberately have no external links. They are software test material, not published papers. Dense retrieval, hybrid ranking, model rewriting, LoRA, and trained routing remain pending.
+The fixture records deliberately have no external links. They are software test material, not published papers. The trained dense and hybrid routes run in the separate local benchmark experiment; the interactive fictional demo still uses lexical routes. Model rewriting, LoRA, and trained patient-aware routing remain pending.
 
 ## Stage 2 real benchmark
 
@@ -38,7 +38,8 @@ The local Python workbench now accepts a frozen BEIR-format NFCorpus dataset for
 
 Follow the [Stage 2 protocol](research/STAGE2_PROTOCOL.md) to download the pinned archive, verify its hashes, freeze the manifest, and reproduce the test run. The first run evaluated 323 judged test queries over 3,633 documents. The [aggregate results at 5](artifacts/benchmark/nfcorpus-bm25-k5.json) and [at 10](artifacts/benchmark/nfcorpus-bm25-k10.json) are included with provenance and run hashes. These scores describe literature retrieval on NFCorpus; it has no dated patient cases or patient-specific judgments. No model has been trained in Stage 2.
 
-The [real-data training plan](research/TRAINING_PLAN.md) sets out a small, local bi-encoder experiment, split and rights checks, honest comparisons, and a separate gate for patient-aware research. It is a plan; model training has not begun.
+The [real-data training plan](research/TRAINING_PLAN.md) sets out the experiment, split and rights checks, honest comparisons, and a separate gate for patient-aware research. Its first local experiment is complete.
+The [training run report](research/TRAINING_RUN.md) records the completed 509-pair CPU run, the dev-selected hybrid, all four test comparators, costs, and limitations. The selected hybrid reached nDCG@10 **0.340181** versus BM25 **0.309963** on NFCorpus test queries. The trained dense route alone had lower MRR than BM25. Only aggregate results and hashes are public; model weights remain local.
 
 The Research Evaluation view computes Recall@5, MRR@5 and nDCG@5 for six hand-labeled questions about the invented records. These numbers verify the evaluation code and do not measure clinical relevance. The same raw run can be saved with `python -m medorchestrate.evaluate --output artifacts/demo/fixture_evaluation.json`.
 
@@ -56,6 +57,6 @@ To search separately imported citation metadata, provide a local JSONL file with
 
 ## Current research limit
 
-The fixture has only hand-labeled judgments for invented records, with no independent clinical review. Ranking changes, fixture metrics, and local latency cannot establish that adaptive selection improves medical relevance. Stage 2 establishes a fixed lexical baseline on NFCorpus. The next research milestone is to implement fixed dense and hybrid baselines under the same protocol, then identify a suitable dataset with patient context and independently judged relevance for the adaptive question.
+The fixture has only hand-labeled judgments for invented records, with no independent clinical review. Ranking changes, fixture metrics, and local latency cannot establish that adaptive selection improves medical relevance. NFCorpus now supports fixed BM25, trained dense, and hybrid comparisons for literature retrieval. The next research milestone is a fresh independent holdout and a suitable dataset with patient context and independently judged relevance for the adaptive question.
 
 See [the audit](docs/audit_report.md), [progress](docs/presentation_progress.md), and [demo guide](docs/final_demo_guide.md).

@@ -211,6 +211,27 @@ async function loadStage2Summary() {
   }
 }
 
+async function loadTrainingSummary() {
+  const output = $('training-summary-output');
+  try {
+    const response = await fetch('./data/training_summary.json');
+    if (!response.ok) throw new Error(`Training summary unavailable (HTTP ${response.status}).`);
+    const report = await response.json();
+    const routes = ['bm25', 'untuned_dense', 'trained_dense', 'bm25_trained_dense_rrf60'];
+    if (report.dataset !== 'nfcorpus' || report.split !== 'test' || report.k !== 10 ||
+        report.selected_route !== 'bm25_trained_dense_rrf60' || !Number.isInteger(report.trained_pair_count) ||
+        !Number.isInteger(report.judged_query_count) || !routes.every(route =>
+          report.metrics?.[route] && ['recall', 'mrr', 'ndcg'].every(key => Number.isFinite(report.metrics[route][key])))) {
+      throw new Error('Training summary has an unexpected format.');
+    }
+    const names = {bm25: 'Fixed BM25', untuned_dense: 'Untuned MiniLM', trained_dense: 'Trained MiniLM', bm25_trained_dense_rrf60: 'BM25 + trained MiniLM'};
+    const score = value => Number(value).toFixed(4);
+    output.innerHTML = `<p class="field-hint">${report.trained_pair_count.toLocaleString('en-US')} train pairs · ${report.judged_query_count.toLocaleString('en-US')} judged test queries · hybrid selected on dev</p><div class="table-scroll"><table class="metric-table"><caption>Aggregate NFCorpus test results at 10</caption><thead><tr><th scope="col">Route</th><th scope="col">Recall@10</th><th scope="col">MRR@10</th><th scope="col">Graded nDCG@10</th></tr></thead><tbody>${routes.map(route => `<tr><th scope="row">${names[route]}</th><td>${score(report.metrics[route].recall)}</td><td>${score(report.metrics[route].mrr)}</td><td>${score(report.metrics[route].ndcg)}</td></tr>`).join('')}</tbody></table></div><p class="field-hint">The selected hybrid improved aggregate nDCG over BM25 on this test split. The trained dense route alone had lower MRR than BM25. These scores measure literature retrieval, not clinical outcomes.</p>`;
+  } catch (error) {
+    output.innerHTML = errorPanel(error, false);
+  }
+}
+
 async function runDiagnostics() {
   const button = $('diagnostic-button');
   setBusy(button, true, 'Checking…', 'Run fixture checks');
@@ -313,3 +334,4 @@ $('evaluation-button').addEventListener('click', loadEvaluation);
 setPage(location.hash.slice(1));
 initialize();
 loadStage2Summary();
+loadTrainingSummary();

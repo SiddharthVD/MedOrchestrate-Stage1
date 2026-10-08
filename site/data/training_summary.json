@@ -1,0 +1,30 @@
+{
+  "dataset": "nfcorpus",
+  "split": "test",
+  "judged_query_count": 323,
+  "trained_pair_count": 509,
+  "selected_route": "bm25_trained_dense_rrf60",
+  "k": 10,
+  "metrics": {
+    "bm25": {
+      "recall": 0.1517577679596505,
+      "mrr": 0.5154774190377905,
+      "ndcg": 0.30996294534532576
+    },
+    "untuned_dense": {
+      "recall": 0.15369212102238455,
+      "mrr": 0.5128237259816207,
+      "ndcg": 0.3154894996975974
+    },
+    "trained_dense": {
+      "recall": 0.16267439367544526,
+      "mrr": 0.5023268956705489,
+      "ndcg": 0.31947582022804727
+    },
+    "bm25_trained_dense_rrf60": {
+      "recall": 0.1692592185281313,
+      "mrr": 0.5414541255098531,
+      "ndcg": 0.34018100703942517
+    }
+  }
+}
