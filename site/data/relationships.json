@@ -1,0 +1,278 @@
+{
+  "version": "source-assertions-v1",
+  "corpus_version": "research-pilot-v1",
+  "corpus_updated_at": "2026-10-09T04:34:53.863356+00:00",
+  "coverage": "Small curated pilot of nine assertions from nine studies; not a comprehensive biomedical fact base",
+  "assertions": [
+    {
+      "id": "assertion-001",
+      "study_id": "MED:42796100",
+      "subject": {
+        "id": "assertion-term:chronic-kidney-disease",
+        "label": "Chronic kidney disease",
+        "type": "disease",
+        "normalization": "local source label; not a canonical ontology identifier"
+      },
+      "object": {
+        "id": "assertion-term:m-ni-re-s-disease",
+        "label": "M\u00e9ni\u00e8re's disease",
+        "type": "disease",
+        "normalization": "local source label; not a canonical ontology identifier"
+      },
+      "predicate": "NO_INCREASE_DETECTED",
+      "evidence": "The available point estimates did not indicate a higher hazard of incident MD among participants with CKD",
+      "evidence_location": "source abstract",
+      "population": "Korean national cohort; 15,943 CKD participants and 63,772 matched comparisons",
+      "study_design": "Longitudinal observational cohort",
+      "limitations": "Weighted variance estimation unavailable; death not modeled as competing event.",
+      "source_url": "https://europepmc.org/article/MED/42796100",
+      "fulltext_url": "https://europepmc.org/articles/PMC13607501",
+      "pdf_url": "https://europepmc.org/articles/PMC13607501?pdf=render",
+      "publication_date": "2026-09-21",
+      "license": "cc by",
+      "retrieved_at": "2026-10-09T04:34:53.863356+00:00",
+      "review_status": "Passage checked against source metadata; NOT independently medically reviewed",
+      "method": "Manual source-grounded curation; no inferred clinical fact"
+    },
+    {
+      "id": "assertion-002",
+      "study_id": "MED:42551975",
+      "subject": {
+        "id": "assertion-term:maternal-asthma",
+        "label": "Maternal asthma",
+        "type": "disease",
+        "normalization": "local source label; not a canonical ontology identifier"
+      },
+      "object": {
+        "id": "assertion-term:childhood-asthma",
+        "label": "Childhood asthma",
+        "type": "disease",
+        "normalization": "local source label; not a canonical ontology identifier"
+      },
+      "predicate": "REPORTED_ASSOCIATION",
+      "evidence": "Maternal asthma was associated with increased odds of all offspring asthma phenotypes",
+      "evidence_location": "source abstract",
+      "population": "16,055 children in the Norwegian MoBa cohort",
+      "study_design": "Observational cohort",
+      "limitations": "Parent-reported asthma; association does not establish causation.",
+      "source_url": "https://europepmc.org/article/MED/42551975",
+      "fulltext_url": "https://europepmc.org/articles/PMC13448598",
+      "pdf_url": "https://europepmc.org/articles/PMC13448598?pdf=render",
+      "publication_date": "2026-08-04",
+      "license": "cc by",
+      "retrieved_at": "2026-10-09T04:34:53.863356+00:00",
+      "review_status": "Passage checked against source metadata; NOT independently medically reviewed",
+      "method": "Manual source-grounded curation; no inferred clinical fact"
+    },
+    {
+      "id": "assertion-003",
+      "study_id": "MED:42798062",
+      "subject": {
+        "id": "assertion-term:zinc-deficiency",
+        "label": "Zinc deficiency",
+        "type": "biomedical concept",
+        "normalization": "local source label; not a canonical ontology identifier"
+      },
+      "object": {
+        "id": "assertion-term:hypertension",
+        "label": "Hypertension",
+        "type": "disease",
+        "normalization": "local source label; not a canonical ontology identifier"
+      },
+      "predicate": "REPORTED_ASSOCIATION",
+      "evidence": "Zinc deficiency was associated with incident hypertension and related complications, particularly secondary hypertension.",
+      "evidence_location": "source abstract",
+      "population": "Adults with zinc measurements; 47,843 matched pairs",
+      "study_design": "Retrospective cohort",
+      "limitations": "Prospective studies needed to determine whether correcting deficiency modifies risk.",
+      "source_url": "https://europepmc.org/article/MED/42798062",
+      "fulltext_url": "https://europepmc.org/articles/PMC13619214",
+      "pdf_url": "https://europepmc.org/articles/PMC13619214?pdf=render",
+      "publication_date": "2026-09-01",
+      "license": "cc by",
+      "retrieved_at": "2026-10-09T04:34:53.863356+00:00",
+      "review_status": "Passage checked against source metadata; NOT independently medically reviewed",
+      "method": "Manual source-grounded curation; no inferred clinical fact"
+    },
+    {
+      "id": "assertion-004",
+      "study_id": "MED:42741302",
+      "subject": {
+        "id": "assertion-term:anxiety-and-depressive-symptoms",
+        "label": "Anxiety and depressive symptoms",
+        "type": "symptom",
+        "normalization": "local source label; not a canonical ontology identifier"
+      },
+      "object": {
+        "id": "assertion-term:stage-2-hypertension",
+        "label": "Stage 2 hypertension",
+        "type": "disease",
+        "normalization": "local source label; not a canonical ontology identifier"
+      },
+      "predicate": "REPORTED_ASSOCIATION",
+      "evidence": "both scores \u22651 were associated with a higher risk of stage 2 hypertension",
+      "evidence_location": "source abstract",
+      "population": "2,448 Taiwanese military personnel free of hypertension at baseline",
+      "study_design": "Observational cohort",
+      "limitations": "Self-reported symptoms; population-specific, nonlinear associations; no causality established.",
+      "source_url": "https://europepmc.org/article/MED/42741302",
+      "fulltext_url": "https://europepmc.org/articles/PMC13572620",
+      "pdf_url": "https://europepmc.org/articles/PMC13572620?pdf=render",
+      "publication_date": "2026-08-31",
+      "license": "cc by",
+      "retrieved_at": "2026-10-09T04:34:53.863356+00:00",
+      "review_status": "Passage checked against source metadata; NOT independently medically reviewed",
+      "method": "Manual source-grounded curation; no inferred clinical fact"
+    },
+    {
+      "id": "assertion-005",
+      "study_id": "MED:42819614",
+      "subject": {
+        "id": "assertion-term:central-obesity",
+        "label": "Central obesity",
+        "type": "disease",
+        "normalization": "local source label; not a canonical ontology identifier"
+      },
+      "object": {
+        "id": "assertion-term:asthma-attacks",
+        "label": "Asthma attacks",
+        "type": "symptom",
+        "normalization": "local source label; not a canonical ontology identifier"
+      },
+      "predicate": "NO_ASSOCIATION_DETECTED",
+      "evidence": "Central obesity was not independently linked to asthma attacks",
+      "evidence_location": "source abstract",
+      "population": "908 US adults with active asthma in NHANES 2021\u20132023",
+      "study_design": "Cross-sectional study",
+      "limitations": "Adjusted confidence interval includes no association; not proof of absence in other populations.",
+      "source_url": "https://europepmc.org/article/MED/42819614",
+      "fulltext_url": "https://europepmc.org/articles/PMC13624445",
+      "pdf_url": "https://europepmc.org/articles/PMC13624445?pdf=render",
+      "publication_date": "2026-09-01",
+      "license": "cc by",
+      "retrieved_at": "2026-10-09T04:34:53.863356+00:00",
+      "review_status": "Passage checked against source metadata; NOT independently medically reviewed",
+      "method": "Manual source-grounded curation; no inferred clinical fact"
+    },
+    {
+      "id": "assertion-006",
+      "study_id": "MED:42281713",
+      "subject": {
+        "id": "assertion-term:glp-1-receptor-agonists",
+        "label": "GLP-1 receptor agonists",
+        "type": "intervention",
+        "normalization": "local source label; not a canonical ontology identifier"
+      },
+      "object": {
+        "id": "assertion-term:lower-blood-pressure",
+        "label": "Lower blood pressure",
+        "type": "outcome",
+        "normalization": "local source label; not a canonical ontology identifier"
+      },
+      "predicate": "DESCRIPTIVE_DIFFERENCE",
+      "evidence": "Lower blood pressure levels were observed among GLP-1 receptor agonist users compared with nonusers in this population.",
+      "evidence_location": "source abstract",
+      "population": "Nondiabetic adults with obesity; only TWO exposed participants",
+      "study_design": "Cross-sectional descriptive analysis",
+      "limitations": "Extremely small exposed sample (n=2); authors explicitly disclaim causal inference.",
+      "source_url": "https://europepmc.org/article/MED/42281713",
+      "fulltext_url": "https://europepmc.org/articles/PMC13251654",
+      "pdf_url": "https://europepmc.org/articles/PMC13251654?pdf=render",
+      "publication_date": "2026-05-11",
+      "license": "cc by",
+      "retrieved_at": "2026-10-09T04:34:53.863356+00:00",
+      "review_status": "Passage checked against source metadata; NOT independently medically reviewed",
+      "method": "Manual source-grounded curation; no inferred clinical fact"
+    },
+    {
+      "id": "assertion-007",
+      "study_id": "MED:42109572",
+      "subject": {
+        "id": "assertion-term:glp-1-receptor-agonists",
+        "label": "GLP-1 receptor agonists",
+        "type": "intervention",
+        "normalization": "local source label; not a canonical ontology identifier"
+      },
+      "object": {
+        "id": "assertion-term:kidney-disease-progression",
+        "label": "Kidney disease progression",
+        "type": "outcome",
+        "normalization": "local source label; not a canonical ontology identifier"
+      },
+      "predicate": "REPORTED_LOWER_RISK",
+      "evidence": "GLP-1 receptor agonist initiation was associated with a lower risk of kidney disease progression compared with DPP-4 inhibitor or sulfonylurea initiation",
+      "evidence_location": "source abstract",
+      "population": "UK adults with type 2 diabetes already receiving SGLT2 inhibitors",
+      "study_design": "Observational target-trial emulation",
+      "limitations": "Active-comparator observational study; HR 0.73 (95% CI 0.58\u20130.92); prospective confirmation needed.",
+      "source_url": "https://europepmc.org/article/MED/42109572",
+      "fulltext_url": "https://europepmc.org/articles/PMC13153036",
+      "pdf_url": null,
+      "publication_date": "2026-04-01",
+      "license": "cc by",
+      "retrieved_at": "2026-10-09T04:34:53.863356+00:00",
+      "review_status": "Passage checked against source metadata; NOT independently medically reviewed",
+      "method": "Manual source-grounded curation; no inferred clinical fact"
+    },
+    {
+      "id": "assertion-008",
+      "study_id": "MED:42819381",
+      "subject": {
+        "id": "assertion-term:pulmonary-rehabilitation",
+        "label": "Pulmonary rehabilitation",
+        "type": "intervention",
+        "normalization": "local source label; not a canonical ontology identifier"
+      },
+      "object": {
+        "id": "assertion-term:dyspnea",
+        "label": "Dyspnea",
+        "type": "symptom",
+        "normalization": "local source label; not a canonical ontology identifier"
+      },
+      "predicate": "REPORTED_PRE_POST_IMPROVEMENT",
+      "evidence": "The outpatient PRP was associated with significant improvements in exercise capacity, fatigue, dyspnea, and functional status.",
+      "evidence_location": "source abstract",
+      "population": "54 symptomatic patients after COVID-19 hospitalization",
+      "study_design": "Single-arm non-randomized prospective trial",
+      "limitations": "Uncontrolled before/after comparison; does not establish a treatment effect versus usual care.",
+      "source_url": "https://europepmc.org/article/MED/42819381",
+      "fulltext_url": "https://europepmc.org/articles/PMC13623915",
+      "pdf_url": "https://europepmc.org/articles/PMC13623915?pdf=render",
+      "publication_date": "2026-09-16",
+      "license": "cc by",
+      "retrieved_at": "2026-10-09T04:34:53.863356+00:00",
+      "review_status": "Passage checked against source metadata; NOT independently medically reviewed",
+      "method": "Manual source-grounded curation; no inferred clinical fact"
+    },
+    {
+      "id": "assertion-009",
+      "study_id": "MED:42405354",
+      "subject": {
+        "id": "assertion-term:tirzepatide",
+        "label": "Tirzepatide",
+        "type": "intervention",
+        "normalization": "local source label; not a canonical ontology identifier"
+      },
+      "object": {
+        "id": "assertion-term:exercise-induced-anaphylaxis",
+        "label": "Exercise-induced anaphylaxis",
+        "type": "symptom",
+        "normalization": "local source label; not a canonical ontology identifier"
+      },
+      "predicate": "CASE_REPORT_TEMPORAL_ASSOCIATION",
+      "evidence": "We report a patient who developed exercise-induced anaphylaxis after starting the dual glucose-dependent insulinotropic polypeptide/glucagon-like peptide-1 receptor agonist tirzepatide",
+      "evidence_location": "source abstract",
+      "population": "One reported patient",
+      "study_design": "Case report",
+      "limitations": "Temporal association in one case; incidence and causation cannot be inferred.",
+      "source_url": "https://europepmc.org/article/MED/42405354",
+      "fulltext_url": "https://europepmc.org/articles/PMC13331987",
+      "pdf_url": "https://europepmc.org/articles/PMC13331987?pdf=render",
+      "publication_date": "2026-06-13",
+      "license": "cc by",
+      "retrieved_at": "2026-10-09T04:34:53.863356+00:00",
+      "review_status": "Passage checked against source metadata; NOT independently medically reviewed",
+      "method": "Manual source-grounded curation; no inferred clinical fact"
+    }
+  ]
+}

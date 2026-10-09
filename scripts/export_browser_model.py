@@ -96,9 +96,15 @@ def main():
         "limitation": "Nutrition-trained research model; broader medical quality has not been independently evaluated. Quantized export is not the exact float benchmark model. No clinical validation.",
     }
     (target / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
+    # Match browser padding/batch sizes: dynamic quantization scales depend on
+    # batch contents, so a six-text CPU batch is not a parity oracle for 4+2.
+    browser_vectors = []
+    for start in range(0, len(texts), 4):
+        part = tokenizer(texts[start:start+4], padding=True, truncation=True, max_length=128, return_tensors="np")
+        browser_vectors.extend(session.run(None, dict(part))[0])
     vectors = [{"text": text, "input_ids": inputs["input_ids"][i].tolist(),
                 "attention_mask": inputs["attention_mask"][i].tolist(),
-                "embedding": actual[i].tolist()} for i, text in enumerate(texts)]
+                "embedding": browser_vectors[i].tolist()} for i, text in enumerate(texts)]
     (target / "parity-fixtures.json").write_text(json.dumps(vectors, indent=2) + "\n")
     print(json.dumps(manifest, indent=2))
 

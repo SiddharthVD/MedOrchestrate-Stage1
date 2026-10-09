@@ -12,6 +12,10 @@ assert.ok(docs.every(doc => R.safeUrl(doc.source_url) && doc.license && doc.full
 assert.ok(R.bm25('asthma', docs).length > 0);
 assert.equal(R.filterDocuments(docs, {yearFrom: 1900, yearTo: 1901}).length, 0);
 const graph = R.buildGraph(docs, 12, 12);
+const assertions = read('./data/relationships.json').assertions;
+const assertionGraph = R.buildAssertionGraph(assertions, docs);
+assert.equal(assertionGraph.edges.length, 18);
+assert.ok(assertionGraph.edges.every(edge => docs.some(doc => doc.id === edge.study_id && doc.abstract.includes(edge.assertion.evidence))));
 assert.ok(graph.edges.length);
 assert.ok(graph.edges.every(edge => ['INDEXED_WITH', 'MENTIONS'].includes(edge.relation) && R.safeUrl(edge.source_url)));
 assert.equal(R.safeUrl('javascript:alert(1)'), '');

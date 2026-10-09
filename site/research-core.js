@@ -163,6 +163,20 @@
     return { nodes, edges };
   }
 
+  function buildAssertionGraph(assertions, documents) {
+    const catalog = new Map(documents.map(doc => [doc.id, doc]));
+    const nodes = new Map(), edges = [];
+    for (const a of assertions.slice(0, 20)) {
+      const doc = catalog.get(a.study_id);
+      if (!doc || !doc.abstract.includes(a.evidence) || !safeUrl(a.source_url)) continue;
+      for (const concept of [a.subject, a.object]) nodes.set('concept:' + concept.id, {id:'concept:' + concept.id, label:concept.label, type:'concept', concept_type:concept.type});
+      nodes.set('study:' + doc.id, {id:'study:' + doc.id,label:doc.title,type:'study',study_id:doc.id});
+      edges.push({id:a.id,from:'concept:' + a.subject.id,to:'concept:' + a.object.id,study_id:doc.id,relation:a.predicate,source_url:doc.source_url,assertion:a});
+      edges.push({id:a.id+'-source',from:'study:'+doc.id,to:'concept:'+a.subject.id,study_id:doc.id,relation:'SOURCE_FOR_ASSERTION',source_url:doc.source_url,assertion:a});
+    }
+    return {nodes:[...nodes.values()],edges};
+  }
+
   function citationMetadata(doc) {
     return {
       id: text(doc.id).slice(0, 120), title: text(doc.title).slice(0, 1000),
@@ -252,5 +266,5 @@
     return normalizeDocument(raw);
   }
 
-  return { tokens, escapeHtml, safeUrl, normalizeDocument, uniqueDocuments, bm25, cosine, rerank, filterDocuments, buildGraph, citationMetadata, validCollections, bibtex, ris, europePmcQuery, fromEuropePmc };
+  return { tokens, escapeHtml, safeUrl, normalizeDocument, uniqueDocuments, bm25, cosine, rerank, filterDocuments, buildGraph, buildAssertionGraph, citationMetadata, validCollections, bibtex, ris, europePmcQuery, fromEuropePmc };
 });

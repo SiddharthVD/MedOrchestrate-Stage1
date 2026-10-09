@@ -18,6 +18,8 @@
 | BACKLOG | Formal experiments and paper | Frozen runs, uncertainty, ablations, citations |
 | COMPLETED LOCALLY | Topic-first lexical real research search | 225 licensed study records, source-provided links, local Europe PMC endpoint, filters and browser acceptance; public deployment deferred |
 | COMPLETED LOCALLY | Study-concept graph and collections | Source-backed indexing/mention edges, graph and connection list, saved citations, reload, export and study comparison |
-| DEFERRED | Browser trained-model acceptance | Actual local weights exported and pilot vectors prepared; browser inference not acceptance-verified under latest session constraints |
+| COMPLETED | Browser trained-model acceptance | Six-text CPU/WASM parity with matched batches, full-snapshot semantic and RRF60 hybrid browser tests |
 | PLANNED | Richer biomedical assertions | Canonical vocabulary IDs, contextual assertions with evidence, review state and held-out annotation audit |
 | PLANNED | Graph-assisted retrieval and live backend | Frozen evaluation against fixed routes, full resource accounting, separately reviewed backend hosting |
+
+| COMPLETED PILOT | Contextual biomedical relationships | Nine exact source-reported assertions; populations, designs, negative findings and limitations; not medically reviewed |

@@ -5,7 +5,7 @@ const escapeHtml = R.escapeHtml;
 const COLLECTIONS_KEY = 'medorchestrate_research_collections_v1';
 const HISTORY_KEY = 'medorchestrate_research_history_v1';
 const state = {
-  snapshot: null, snapshotDocs: [], docs: [], catalog: new Map(), topics: [],
+  snapshot: null, snapshotDocs: [], docs: [], catalog: new Map(), topics: [], assertions: [],
   results: [], selectedId: '', compareIds: new Set(), graph: { nodes: [], edges: [] },
   collections: { version: 1, collections: [] }, activeCollectionId: '', history: [],
   researchWorker: null, modelWorker: null, modelReady: false, modelMeta: null,
@@ -81,6 +81,7 @@ async function loadSnapshot() {
     $('activate-model').disabled = false;
     renderTopics();
     initializeResearchWorker();
+    loadAssertions();
     status('Snapshot ready. Search a topic; live Europe PMC will be attempted when selected.');
   } catch (error) {
     $('snapshot-status').textContent = 'Snapshot unavailable';
@@ -435,9 +436,38 @@ function selectGraphEdge(index) {
   if (!edge) return;
   const doc = state.catalog.get(edge.study_id);
   const concept = state.graph.nodes.find(node => node.id === edge.to);
+  if (edge.assertion) {
+    $('edge-detail').innerHTML = assertionHtml(edge.assertion);
+    $('graph-svg').querySelectorAll('.graph-edge').forEach((path, i) => path.classList.toggle('active', i === index));
+    return;
+  }
   $('edge-detail').innerHTML = `<span class="eyebrow">EVIDENCE LINK</span><h3>${escapeHtml(concept?.label || 'Concept')}</h3><p>${escapeHtml(edge.relation || 'Associated')} in <strong>${escapeHtml(doc?.title || 'Source study')}</strong>.</p><p class="helper">${escapeHtml(edge.source || 'Publication metadata')}</p>${trustedLink(edge.source_url, 'Open source record', 'link-button')}`;
   $('graph-svg').querySelectorAll('.graph-edge').forEach((path, i) => path.classList.toggle('active', i === index));
 }
+
+function assertionHtml(a) {
+  return `<span class="eyebrow">SOURCE-REPORTED FINDING</span><h3>${escapeHtml(a.subject.label)} → ${escapeHtml(a.object.label)}</h3><p><strong>${escapeHtml(a.predicate.replaceAll('_',' '))}</strong></p><blockquote>${escapeHtml(a.evidence)}</blockquote><dl><dt>Population</dt><dd>${escapeHtml(a.population)}</dd><dt>Study design</dt><dd>${escapeHtml(a.study_design)}</dd><dt>Limitations</dt><dd>${escapeHtml(a.limitations)}</dd><dt>Review status</dt><dd>${escapeHtml(a.review_status)}</dd><dt>Evidence location / date / license</dt><dd>${escapeHtml(a.evidence_location)} · ${escapeHtml(a.publication_date)} · ${escapeHtml(a.license)}</dd></dl>${trustedLink(a.source_url,'Read supporting study','link-button')} ${trustedLink(a.fulltext_url,'Read full text','link-button')} ${trustedLink(a.pdf_url,'PDF','link-button')}<p class="helper">This is a finding reported by one study, not a diagnosis, prescription or universal biomedical fact.</p>`;
+}
+async function loadAssertions() {
+  try {
+    const response = await fetch('./data/relationships.json');
+    if (!response.ok) throw new Error('Assertion dataset unavailable');
+    const payload = await response.json();
+    if (payload.corpus_updated_at !== state.snapshot.updated_at || !Array.isArray(payload.assertions)) throw new Error('Assertion corpus mismatch');
+    state.assertions = payload.assertions.filter(a => {
+      const doc = state.catalog.get(a.study_id);
+      return doc && typeof a.evidence === 'string' && doc.abstract.includes(a.evidence) && R.safeUrl(a.source_url);
+    });
+    $('browse-findings').disabled = !state.assertions.length;
+    $('browse-findings').textContent = `Explore ${state.assertions.length} sourced findings`;
+  } catch (error) { $('browse-findings').textContent = error.message; }
+}
+$('browse-findings').addEventListener('click', () => {
+  state.graph = R.buildAssertionGraph(state.assertions, state.snapshotDocs);
+  state.snapshotDocs.forEach(doc => { if (!state.catalog.has(doc.id)) state.catalog.set(doc.id, doc); });
+  renderGraph();
+  if (state.graph.edges.length) selectGraphEdge(0);
+});
 
 function loadCollections() {
   try { state.collections = R.validCollections(loadLocal(COLLECTIONS_KEY, { version: 1, collections: [] })); }

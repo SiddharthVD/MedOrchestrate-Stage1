@@ -1,4 +1,4 @@
-name: Test and deploy demo
+name: Test and deploy research workspace
 
 on:
   push:
@@ -28,6 +28,8 @@ jobs:
         with:
           node-version: '22'
       - run: node site/smoke.mjs
+      - run: node static/workspace-smoke.cjs
+      - run: node site/research-smoke.mjs
 
   deploy:
     needs: test
