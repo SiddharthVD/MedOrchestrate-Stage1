@@ -24,7 +24,7 @@
         <a class="nav" href="#history" data-view="history"><span class="nav-icon" aria-hidden="true">↺</span> Search history</a>
       </nav>
       <div class="side-bottom">
-        <div class="model-card"><span class="model-card-kicker">LOCAL MODEL</span><strong>Trained MiniLM reranker</strong><p>Optional download to this browser. Lexical search works immediately.</p><button class="model-button" id="activate-model" type="button" disabled>Enable semantic search</button><small id="model-status" role="status" aria-live="polite">Model inactive</small></div>
+        <div class="model-card"><span class="model-card-kicker">LOCAL MODEL</span><strong>Trained MiniLM retrieval</strong><p>Optional 56 MiB model plus 14 MiB runtime. Cached when available. Lexical search works immediately.</p><button class="model-button" id="activate-model" type="button" disabled>Enable semantic search</button><small id="model-status" role="status" aria-live="polite">Model inactive</small></div>
         <a class="legacy-link" href="./demo/index.html">Open fictional demo <span aria-hidden="true">↗</span></a>
       </div>
     </aside>
@@ -38,13 +38,13 @@
             <label for="topic-input">What are you researching?</label>
             <div class="search-row"><span class="search-icon" aria-hidden="true">⌕</span><input id="topic-input" type="search" maxlength="200" placeholder="e.g. kidney outcomes in type 2 diabetes" autocomplete="off" required><button class="primary" id="search-button" type="submit">Search literature <span aria-hidden="true">→</span></button></div>
             <div class="search-options">
-              <div><label for="route-select">Ranking</label><select id="route-select"><option value="lexical">Lexical BM25</option><option value="semantic">Trained model rerank</option><option value="hybrid">Hybrid rerank</option></select></div>
+              <div><label for="route-select">Ranking</label><select id="route-select"><option value="lexical">Lexical BM25</option><option value="semantic">Trained semantic search</option><option value="hybrid">Hybrid BM25 + model</option></select></div>
               <div><label for="publication-type">Study type</label><select id="publication-type"><option value="all">All publication types</option><option>Review</option><option>Clinical Trial</option><option>Randomized Controlled Trial</option><option>Journal Article</option><option>Meta-Analysis</option><option>Systematic Review</option></select></div>
               <div><label for="year-from">From year</label><input id="year-from" type="number" min="1900" max="2100" placeholder="Any"></div>
               <div><label for="year-to">Through year</label><input id="year-to" type="number" min="1900" max="2100" placeholder="Any"></div>
               <label class="live-option"><input id="live-search" type="checkbox"><span>Search live Europe PMC</span></label>
             </div>
-            <p class="helper" id="route-note">Lexical BM25 searches immediately. Model routes rerank up to 40 lexical candidates after you enable the local model.</p>
+            <p class="helper" id="route-note">Lexical BM25 searches immediately. Semantic and hybrid search rank every eligible snapshot study, plus up to 40 live candidates when selected.</p>
           </form>
           <section class="topic-section" aria-labelledby="topics-title"><div class="section-heading"><div><p class="eyebrow">A PLACE TO START</p><h2 id="topics-title">Explore a topic</h2></div><span id="topic-count"></span></div><div class="topic-grid" id="topic-grid"><p class="muted">Loading topics…</p></div></section>
           <section class="results-section" aria-labelledby="results-title"><div class="section-heading"><div><p class="eyebrow">SOURCE LINKED RESULTS</p><h2 id="results-title">Studies</h2></div><span id="result-count"></span></div><div id="search-status" class="status-box" role="status" aria-live="polite">Choose a topic or enter a research question to begin.</div><div class="results-layout"><div class="results-list" id="results-list"></div><aside class="detail-panel" id="detail-panel" aria-label="Study details"><div class="detail-empty"><span aria-hidden="true">▤</span><h3>Select a study</h3><p>Review its abstract, provenance, concepts, and source links here.</p></div></aside></div></section>

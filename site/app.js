@@ -628,8 +628,8 @@ window.addEventListener('hashchange', () => setView(location.hash.slice(1)));
 $('search-form').addEventListener('submit', event => { event.preventDefault(); runSearch(); });
 $('route-select').addEventListener('change', () => {
   $('route-note').textContent = $('route-select').value === 'lexical'
-    ? 'Lexical BM25 searches immediately. Model routes rerank up to 40 lexical candidates after you enable the local model.'
-    : 'This route uses the trained local model to rerank up to 40 lexical candidates. Enable it in the sidebar before searching.';
+    ? 'Lexical BM25 searches immediately. Model routes search the full eligible snapshot and rerank up to 40 live candidates.'
+    : 'This route ranks the full eligible snapshot with the trained model. Live retrieval contributes up to 40 candidates. Enable the model in the sidebar.';
 });
 $('activate-model').addEventListener('click', activateModel);
 $('new-collection-form').addEventListener('submit', event => {
