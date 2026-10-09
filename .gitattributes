@@ -1,0 +1,6 @@
+# Preserve exact bytes for integrity-checked source/model artifacts on every OS.
+site/model/vocab.txt -text
+site/model/*.onnx -text
+site/data/research-corpus.json -text
+data/research/pilot.json -text
+site/vendor/ort/*.wasm -text
