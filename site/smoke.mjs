@@ -98,7 +98,7 @@ for (const [route, metrics] of Object.entries(trainingSummary.metrics)) {
   assert.deepEqual(metrics, trainingReport.routes[route].metrics);
 }
 assert.doesNotMatch(JSON.stringify(trainingSummary), /corpus\.jsonl|queries\.jsonl|qrels\/|ranked_ids|query_text|run_sha256|weights_sha256/);
-const page = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+const page = fs.readFileSync(path.join(__dirname, 'demo', 'index.html'), 'utf8');
 assert.match(page, /https:\/\/github\.com\/SiddharthVD\/MedOrchestrate-Stage1\/blob\/main\/research\/STAGE2_PROTOCOL\.md/);
 assert.match(page, /https:\/\/github\.com\/SiddharthVD\/MedOrchestrate-Stage1\/blob\/main\/research\/TRAINING_RUN\.md/);
 console.log('Static demo smoke passed: five-view fixture and aggregate-only real-data research summaries.');

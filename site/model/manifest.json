@@ -1,0 +1,33 @@
+{
+  "version": "nfcorpus-minilm-v1-int8-onnx-1",
+  "name": "MedOrchestrate trained MiniLM",
+  "base_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "base_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+  "base_license": "Apache-2.0",
+  "purpose": "Academic literature retrieval research",
+  "trained_pair_count": 509,
+  "training_dataset": "NFCorpus train",
+  "weights_sha256": "88a0c961694979e2b8c12ba6281a831302966392f63e8f49267005eea22b76da",
+  "weights_hash_definition": "SHA-256 of sorted relative filenames and each file hash, excluding training_manifest.json",
+  "safetensors_sha256": "ea0187ef2508975aed77d9d3baf9e8da514a19b6600e2d979a219b435e161365",
+  "file": "model_quantized.onnx",
+  "sha256": "538eec940898040370d950a06d5ebc0a4d14ee20289bd8be8c320dcfbdc5bf35",
+  "size_bytes": 58712087,
+  "vocab_sha256": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3",
+  "max_length": 128,
+  "dimensions": 384,
+  "pooling": "attention-masked mean followed by L2 normalization",
+  "quantization": "dynamic uint8 per-channel MatMul/Gemm weights; embeddings remain float",
+  "opset": 17,
+  "export_packages": {
+    "torch": "2.14.1+cpu",
+    "onnx": "1.19.1",
+    "onnxruntime": "1.23.2"
+  },
+  "parity": {
+    "sample_count": 6,
+    "min_cosine_to_trained_float": 0.9886962175369263,
+    "mean_cosine_to_trained_float": 0.9920483231544495
+  },
+  "limitation": "Nutrition-trained research model; broader medical quality has not been independently evaluated. Quantized export is not the exact float benchmark model. No clinical validation."
+}

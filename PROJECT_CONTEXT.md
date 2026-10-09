@@ -8,12 +8,12 @@ Academic title from the handoff: **An Adaptive AI Framework for Orchestrating Re
 
 ## Current stage
 
-Stage 1 local and public demonstration was built from scratch after Siddharth confirmed there was no existing code repository. Stage 2 adds a local, fixed BM25 benchmark on BEIR transformed NFCorpus. A later local CPU run fine-tuned MiniLM on 509 NFCorpus train pairs and compared four retrieval routes. The public workbench still searches only fictional cases and records; its research cards show aggregate real-data metrics. The formal patient-aware research question remains untested.
+Stage 1 local and public demonstration was built from scratch after Siddharth confirmed there was no existing code repository. Stage 2 adds a local, fixed BM25 benchmark on BEIR transformed NFCorpus. A later local CPU run fine-tuned MiniLM on 509 NFCorpus train pairs and compared four retrieval routes. The latest local workspace has an explicit offline Demo Data default and local Live API mode, patient context beside search, route comparison, compatible evaluation and recent sessions. A separate local research explorer contains 225 permitted real study records, a mention/indexing graph, source links, collections and study comparison. These local changes have not been deployed to Pages. The formal patient-aware research question remains untested.
 
 ## Confirmed scope
 
 - Primary audience for the expanded experience: students and researchers exploring medical literature, confirmed on 9 October 2026.
-- Planned research knowledge graph and topic-first exploration: diseases, symptoms, interventions, studies, biomedical concepts, source-backed assertions, and saved research collections. Case mode remains an optional research path. See `docs/KNOWLEDGE_GRAPH_PLAN.md`; these features are not yet implemented.
+- Local research concept/study graph and topic-first exploration are implemented with licensed study metadata, mention/indexing provenance and saved collections. Rich biomedical assertions and graph-assisted retrieval remain planned. See `docs/KNOWLEDGE_GRAPH_PLAN.md`.
 - Local workbench for fictional patient context, question based evidence retrieval, ranked results, and an execution trace.
 - CPU friendly lexical retrieval and a transparent adaptive rule for the first demonstration.
 - No clinical assessment, diagnosis, treatment recommendations, real patient uploads, or clinical effectiveness claims.

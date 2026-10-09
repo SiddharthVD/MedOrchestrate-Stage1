@@ -2,7 +2,11 @@ const $ = id => document.getElementById(id);
 const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const routeNames = { direct_bm25: 'Direct BM25', expanded_bm25: 'Expanded BM25', adaptive: 'Adaptive rule' };
 const pages = new Set(['dashboard', 'cases', 'search', 'compare', 'evaluation']);
-const state = { cases: [], corpora: [], importError: '', currentCase: null, questionEdited: false, contextVersion: 0, benchmarkAvailable: false };
+const state = { cases: [], corpora: [], importError: '', currentCase: null, questionEdited: false, contextVersion: 0, benchmarkAvailable: false, initVersion: 0 };
+const demoApi = window.MedOrchestrateStaticApi.create(window.MedOrchestrateCore, name => fetchJson('/demo-data/' + name));
+const transport = window.MedWorkspaceApi.create(demoApi, fetchJson);
+let sessions = [];
+try { const stored = JSON.parse(localStorage.getItem('medorchestrate_sessions_v1') || '[]'); sessions = Array.isArray(stored) ? stored.filter(row => typeof row.question === 'string' && typeof row.case_id === 'string').slice(0, 10) : []; } catch { /* Storage is optional. */ }
 
 function setPage(name) {
   const target = pages.has(name) ? name : 'dashboard';
@@ -31,7 +35,9 @@ function errorPanel(error, retry) {
   return `<div class="error-panel" role="alert"><strong>Unable to load this view</strong><p>${escapeHtml(message)}</p>${retry ? '<button class="secondary retry-button" type="button">Retry connection</button>' : ''}</div>`;
 }
 
-async function json(url, options = {}, timeoutMs = 15000) {
+function json(url, options = {}, timeoutMs = 15000) { return transport.request(url, options, timeoutMs); }
+
+async function fetchJson(url, options = {}, timeoutMs = 15000) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
@@ -49,7 +55,7 @@ async function json(url, options = {}, timeoutMs = 15000) {
 }
 
 function setControlsEnabled(enabled) {
-  ['case-select', 'as-of', 'question', 'route', 'corpus', 'search-button', 'compare-button', 'diagnostic-button', 'evaluation-button', 'benchmark-refresh-button'].forEach(id => {
+  ['case-select', 'as-of', 'search-case-select', 'search-as-of', 'question', 'route', 'corpus', 'search-button', 'compare-button', 'diagnostic-button', 'evaluation-button', 'benchmark-refresh-button'].forEach(id => {
     $(id).disabled = !enabled;
   });
 }
@@ -59,6 +65,9 @@ function selectedContext() {
 }
 
 function updateContexts() {
+  $('search-case-select').value = $('case-select').value;
+  $('search-as-of').value = $('as-of').value;
+  $('question-status').textContent = state.questionEdited ? 'Edited question · exploratory and unscored. Fixture metrics do not score this question.' : 'Suggested question · exploratory search. Evaluation reports use their own frozen queries.';
   const selected = state.cases.find(row => row.id === $('case-select').value);
   const caseName = selected?.name || 'No case selected';
   const date = $('as-of').value || 'No date selected';
@@ -90,7 +99,8 @@ async function loadCase() {
     if (!state.questionEdited) $('question').value = data.suggested_question || '';
     updateContexts();
     const facts = data.facts || [];
-    $('case-detail').innerHTML = `<article class="panel case-card"><div class="section-heading"><div><p class="panel-kicker">FICTIONAL CASE</p><h2>${escapeHtml(data.name)}</h2></div><span class="count-pill">${facts.length} available fact${facts.length === 1 ? '' : 's'}</span></div><p>${escapeHtml(data.description)}</p><h3>Facts available by ${escapeHtml(data.as_of)}</h3><div class="fact-list">${facts.map(fact => `<div class="fact"><span>${escapeHtml(fact.label)}</span><span class="meta">Available ${escapeHtml(fact.available_on)}</span></div>`).join('') || '<div class="empty-state compact">No facts were available on this date. Adaptive routing will use direct BM25.</div>'}</div><p class="field-hint">Suggested question: ${escapeHtml(data.suggested_question)}</p></article>`;
+    $('case-detail').innerHTML = `<article class="panel case-card"><div class="section-heading"><div><p class="panel-kicker">FICTIONAL CASE</p><h2>${escapeHtml(data.name)}</h2></div><span class="count-pill">${facts.length} available fact${facts.length === 1 ? '' : 's'}</span></div><p>${escapeHtml(data.description)}</p><dl class="system-details"><div><dt>Identifier</dt><dd>${escapeHtml(data.id)}</dd></div><div><dt>Age</dt><dd>Adult; exact age not provided in the fixture</dd></div></dl><h3>Available history and fact timeline through ${escapeHtml(data.as_of)}</h3><div class="fact-list">${facts.map(fact => `<div class="fact"><span>${escapeHtml(fact.label)}</span><span class="meta">Available ${escapeHtml(fact.available_on)}</span></div>`).join('') || '<div class="empty-state compact">No facts were available on this date. Adaptive routing will use direct BM25.</div>'}</div><p class="field-hint">Suggested question: ${escapeHtml(data.suggested_question)}</p></article>`;
+    $('patient-context').innerHTML = `<strong>${escapeHtml(data.id)} · Fictional adult</strong><p>${escapeHtml(facts.map(fact => fact.label).join(' · ') || 'No facts available at this cutoff.')}</p>`;
   } catch (error) {
     if (version !== state.contextVersion) return;
     state.currentCase = null;
@@ -136,7 +146,7 @@ function traceCard(data) {
 }
 
 function summary(data) {
-  return `<div class="result-summary"><span class="count-pill">${(data.results || []).length} matching records</span><span>Executed ${escapeHtml(routeNames[data.executed_route] || data.executed_route)}</span><span>${escapeHtml(data.trace?.elapsed_ms ?? '—')} ms on this machine</span><span>${escapeHtml(data.trace?.eligible_documents ?? '—')} date eligible records</span></div>`;
+  return `<div class="result-summary"><span class="count-pill">${(data.results || []).length} matching records</span><span>Executed ${escapeHtml(routeNames[data.executed_route] || data.executed_route)}</span><span>${Number.isFinite(data.trace?.elapsed_ms) ? escapeHtml(data.trace.elapsed_ms) + ' ms measured by ' + (transport.mode === 'demo' ? 'browser engine' : 'backend engine') : 'Latency: Not measured'}</span><span>${escapeHtml(data.trace?.eligible_documents ?? 'Not measured')} date eligible records</span></div>`;
 }
 
 function setBusy(button, busy, busyLabel, idleLabel) {
@@ -158,9 +168,11 @@ async function submitSearch(event) {
     const data = await runSearch(route, context);
     if (version !== state.contextVersion || context.question !== $('question').value.trim() || context.corpus !== $('corpus').value || route !== $('route').value) return;
     $('search-output').innerHTML = `<div class="section-heading"><div><p class="panel-kicker">SEARCH OUTPUT</p><h2>Ranked records</h2></div></div>${summary(data)}${resultCards(data)}${traceCard(data)}`;
+    rememberSession(context, route);
   } catch (error) {
+    if (version !== state.contextVersion) return;
     $('search-output').innerHTML = errorPanel(error, false);
-  } finally { setBusy(button, false, 'Searching…', 'Run search'); }
+  } finally { if (version === state.contextVersion) setBusy(button, false, 'Searching…', 'Run search'); }
 }
 
 async function compareRoutes() {
@@ -177,16 +189,25 @@ async function compareRoutes() {
   try {
     const response = await json('/api/compare', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(context) });
     if (version !== state.contextVersion || context.question !== $('question').value.trim() || context.corpus !== $('corpus').value) return;
-    $('compare-output').innerHTML = `<div class="compare-grid">${routes.map((route, index) => {
+    const directIds = (response.comparisons.direct_bm25.results || []).slice(0, 5).map(row => row.id);
+    const expandedIds = (response.comparisons.expanded_bm25.results || []).slice(0, 5).map(row => row.id);
+    const common = directIds.filter(id => expandedIds.includes(id));
+    const changed = expandedIds.filter(id => directIds.indexOf(id) !== expandedIds.indexOf(id));
+    $('compare-output').innerHTML = `<div class="context-strip"><span>Top 5 overlap: ${common.length} records</span><span>Changed positions in expanded results: ${escapeHtml(changed.join(', ') || 'None')}</span><span>Question is exploratory and unscored.</span></div><div class="compare-grid">${routes.map((route, index) => {
       const data = response.comparisons[route];
       return `<article class="compare-card"><p class="panel-kicker">${index === 2 ? 'RULE SELECTED' : 'FIXED BASELINE'}</p><h2>${routeNames[route]}</h2>${summary(data)}<p class="query-line"><strong>Query used</strong> ${escapeHtml(data.query_used)}</p>${resultCards(data, true)}${traceCard(data)}</article>`;
     }).join('')}</div><div class="fixture-banner"><strong>How to read this</strong><span>These are local rankings of ${context.corpus === 'fictional-demo-v1' ? 'invented fixture records' : 'user supplied, unverified records'}. Differences do not establish clinical retrieval quality.</span></div>`;
   } catch (error) {
+    if (version !== state.contextVersion) return;
     $('compare-output').innerHTML = errorPanel(error, false);
-  } finally { setBusy(button, false, 'Comparing…', 'Compare three routes'); }
+  } finally { if (version === state.contextVersion) setBusy(button, false, 'Comparing…', 'Compare three routes'); }
 }
 
 async function loadEvaluation() {
+  if ($('corpus').value !== 'fictional-demo-v1') {
+    $('evaluation-output').innerHTML = '<div class="empty-state">No compatible relevance judgments for the active imported corpus. Fixture scores are unavailable for this dataset.</div>';
+    return;
+  }
   const button = $('evaluation-button');
   setBusy(button, true, 'Loading…', 'Load fixture metrics');
   $('evaluation-output').innerHTML = '<div class="loading-state compact" role="status">Calculating fictional fixture metrics…</div>';
@@ -260,7 +281,7 @@ async function runDiagnostics() {
     const caseId = $('case-select').value;
     const early = await json(`/api/cases/${encodeURIComponent(caseId)}?as_of=1900-01-01`);
     const current = await json(`/api/cases/${encodeURIComponent(caseId)}?as_of=${encodeURIComponent($('as-of').value)}`);
-    const context = { case_id: caseId, as_of: $('as-of').value, question: current.suggested_question };
+    const context = { case_id: caseId, as_of: $('as-of').value, question: current.suggested_question, corpus: 'fictional-demo-v1' };
     const routes = ['direct_bm25', 'expanded_bm25', 'adaptive'];
     const responses = await Promise.all(routes.map(route => runSearch(route, context)));
     const checks = [
@@ -276,14 +297,21 @@ async function runDiagnostics() {
 }
 
 async function initialize() {
-  showConnection(false, 'Connecting to local API…');
+  const initVersion = ++state.initVersion;
+  const mode = transport.mode;
+  const previousCase = $('case-select').value;
+  const previousDate = $('as-of').value;
+  state.currentCase = null;
+  $('patient-context').textContent = 'Loading patient context…';
+  showConnection(false, mode === 'demo' ? 'Loading offline demo…' : 'Connecting to local backend…');
   setControlsEnabled(false);
   try {
     const [status, rows] = await Promise.all([json('/api/status'), json('/api/cases')]);
+    if (initVersion !== state.initVersion) return;
     if (!Array.isArray(rows) || !rows.length) throw new Error('The API returned no fictional cases.');
-    const corpusResponse = await json('/api/corpora').catch(error => {
-      return { import_error: error.message, corpora: [{ id: 'fictional-demo-v1', provenance_note: 'Every record is invented for this software demonstration.' }] };
-    });
+    const corpusResponse = await json('/api/corpora');
+    if (initVersion !== state.initVersion) return;
+    if (!Array.isArray(corpusResponse.corpora) || !corpusResponse.corpora.length) throw new Error('No source corpus is available from the selected engine.');
     state.cases = rows;
     state.corpora = corpusResponse.corpora;
     state.importError = corpusResponse.import_error || '';
@@ -291,15 +319,25 @@ async function initialize() {
     $('doc-count').textContent = String(status.documents);
     $('route-count').textContent = String(status.available_routes.length);
     $('case-select').innerHTML = rows.map(row => `<option value="${escapeHtml(row.id)}">${escapeHtml(row.name)}</option>`).join('');
+    if (rows.some(row => row.id === previousCase)) $('case-select').value = previousCase;
+    $('search-case-select').innerHTML = $('case-select').innerHTML;
     $('corpus').innerHTML = state.corpora.map(row => `<option value="${escapeHtml(row.id)}">${row.id === 'fictional-demo-v1' ? 'Fictional demonstration' : 'Imported local records · unverified'} (${escapeHtml(row.documents ?? '—')} records)</option>`).join('');
     $('corpus-note').textContent = [state.corpora[0]?.provenance_note, state.importError ? `Imported corpus unavailable: ${state.importError}` : ''].filter(Boolean).join(' ');
     const now = new Date();
-    $('as-of').value = [now.getFullYear(), String(now.getMonth() + 1).padStart(2, '0'), String(now.getDate()).padStart(2, '0')].join('-');
+    $('as-of').value = previousDate || [now.getFullYear(), String(now.getMonth() + 1).padStart(2, '0'), String(now.getDate()).padStart(2, '0')].join('-');
+    const details = [['Data mode', mode === 'demo' ? 'Demo Data · offline fictional fixture' : 'Live API · local Flask backend'], ['Corpus', status.corpus], ['Engine', mode === 'demo' ? status.engine : 'Existing Python BM25 and adaptive rule'], ['Available strategies', status.available_routes.map(route => routeNames[route] || route).join(', ')], ['Unavailable case-search models', (status.unavailable_routes || []).join(', ') || 'Not reported']];
+    $('system-details').innerHTML = details.map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join('');
+    for (const option of $('route').options) option.disabled = !status.available_routes.includes(option.value);
+    if (!status.available_routes.includes($('route').value)) $('route').value = status.available_routes[0];
     setControlsEnabled(true);
     await loadCase();
-    showConnection(true, 'Local API connected · research prototype');
+    if (initVersion !== state.initVersion) return;
+    if (!state.currentCase) throw new Error('Patient context could not load from the selected engine. Retry the connection.');
+    showConnection(true, mode === 'demo' ? 'Demo Data ready · offline fixture' : 'Local API connected · fictional case corpus');
     loadBenchmarkStatus();
   } catch (error) {
+    if (initVersion !== state.initVersion) return;
+    setControlsEnabled(false);
     showConnection(false, 'Local API unavailable');
     const panel = errorPanel(error, true);
     $('case-detail').innerHTML = panel;
@@ -312,6 +350,8 @@ async function initialize() {
     $('case-count').textContent = '—';
     $('doc-count').textContent = '—';
     $('route-count').textContent = '—';
+    $('system-details').textContent = 'Selected engine unavailable. No demonstration fallback has been used.';
+    $('patient-context').textContent = 'Patient context unavailable in the selected mode.';
     if (!$('dashboard-error')) {
       const holder = document.createElement('div');
       holder.id = 'dashboard-error';
@@ -321,14 +361,48 @@ async function initialize() {
   }
 }
 
+function renderSessions() {
+  $('recent-sessions').innerHTML = sessions.length ? sessions.map((row, i) => `<button class="session-row" type="button" data-session="${i}"><strong>${escapeHtml(row.question)}</strong><span>${escapeHtml(row.case_id)} · ${escapeHtml(routeNames[row.route] || row.route)} · ${escapeHtml(row.mode || 'demo')} · ${escapeHtml(row.at || '')}</span></button>`).join('') : '<div class="empty-state compact">Your searches will appear here.</div>';
+}
+function rememberSession(context, route) {
+  sessions = [{ ...context, route, mode: transport.mode, at: new Date().toISOString() }, ...sessions].slice(0, 10);
+  try { localStorage.setItem('medorchestrate_sessions_v1', JSON.stringify(sessions)); } catch { /* Retrieval does not depend on storage. */ }
+  renderSessions();
+}
+async function changeMode() {
+  transport.setMode($('data-mode').value);
+  ++state.contextVersion;
+  $('dashboard-error')?.remove();
+  $('mode-badge').textContent = transport.mode === 'demo' ? 'Demo Data' : 'Live API';
+  $('mode-description').textContent = transport.mode === 'demo' ? 'Fictional cases and records. No internet or AI API required.' : 'Calls the local Flask endpoints. This mode is not an external PubMed or model service.';
+  clearOutputs();
+  $('evaluation-output').innerHTML = '';
+  await initialize();
+}
+
 window.addEventListener('hashchange', () => setPage(location.hash.slice(1)));
 document.addEventListener('click', event => {
+  const session = event.target.closest('[data-session]');
+  if (session) {
+    const row = sessions[Number(session.dataset.session)];
+    if (!row || !state.cases.some(item => item.id === row.case_id)) return;
+    $('case-select').value = row.case_id;
+    $('as-of').value = row.as_of;
+    $('question').value = row.question;
+    state.questionEdited = true;
+    if (Array.from($('route').options).some(option => option.value === row.route && !option.disabled)) $('route').value = row.route;
+    loadCase(); location.hash = '#search';
+  }
   if (event.target.closest('.retry-button')) {
     event.preventDefault();
     $('dashboard-error')?.remove();
     initialize();
   }
 });
+$('data-mode').addEventListener('change', changeMode);
+$('search-case-select').addEventListener('change', () => { $('case-select').value = $('search-case-select').value; loadCase(); });
+$('search-as-of').addEventListener('change', () => { $('as-of').value = $('search-as-of').value; loadCase(); });
+$('clear-sessions').addEventListener('click', () => { sessions = []; try { localStorage.removeItem('medorchestrate_sessions_v1'); } catch {} renderSessions(); });
 $('case-select').addEventListener('change', () => loadCase());
 $('as-of').addEventListener('change', () => loadCase());
 $('question').addEventListener('input', () => {
@@ -346,6 +420,7 @@ $('route').addEventListener('change', () => {
   $('search-output').innerHTML = '<div class="empty-state">The route changed. Run a search to see current results.</div>';
 });
 $('corpus').addEventListener('change', () => {
+  $('evaluation-output').innerHTML = '';
   const corpus = state.corpora.find(row => row.id === $('corpus').value);
   $('corpus-note').textContent = [corpus?.provenance_note || 'Source provenance unavailable.', state.importError ? `Imported corpus unavailable: ${state.importError}` : ''].filter(Boolean).join(' ');
   updateContexts();
@@ -358,4 +433,5 @@ $('evaluation-button').addEventListener('click', loadEvaluation);
 $('benchmark-refresh-button').addEventListener('click', loadBenchmarkStatus);
 $('benchmark-run-button').addEventListener('click', runBenchmarkEvaluation);
 setPage(location.hash.slice(1));
+renderSessions();
 initialize();

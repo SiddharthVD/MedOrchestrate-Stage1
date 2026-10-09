@@ -1,0 +1,28 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const core = require('./search-core.js');
+const adapter = require('./static-api.js');
+const gateway = require('./workspace-api.js');
+const data = name => JSON.parse(fs.readFileSync(path.join(__dirname, '../data', name), 'utf8'));
+(async () => {
+  let networkCalls = 0;
+  const api = gateway.create(adapter.create(core, async name => data(name)), async () => { networkCalls++; throw new Error('Backend down'); });
+  assert.equal(api.mode, 'demo');
+  const status = await api.request('/api/status');
+  assert.equal(status.documents, 12);
+  assert.ok(status.unavailable_routes.includes('dense'));
+  const caseRow = data('cases.json')[0];
+  const output = await api.request('/api/search', {body: JSON.stringify({case_id: caseRow.id, question: caseRow.suggested_question, as_of: '2026-10-09', corpus: 'fictional-demo-v1', route: 'adaptive'})});
+  assert.ok(output.results.length);
+  assert.equal(networkCalls, 0);
+  api.setMode('live');
+  await assert.rejects(api.request('/api/search'), /Backend down/);
+  assert.equal(api.mode, 'live');
+  assert.equal(networkCalls, 1);
+  api.setMode('demo');
+  assert.equal((await api.request('/api/cases')).length, 3);
+  assert.throws(() => api.setMode('invalid'), /Unknown data mode/);
+  assert.equal((await api.request('/api/benchmark/status')).available, false);
+  console.log('Workspace transport smoke passed: offline default, real fixture search, explicit live error, no fallback.');
+})().catch(error => { console.error(error); process.exitCode = 1; });

@@ -3,58 +3,60 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#102f36">
-  <title>MedOrchestrate · Static demonstration</title>
-  <link rel="stylesheet" href="./style.css">
-  <script src="./search-core.js" defer></script>
-  <script src="./static-api.js" defer></script>
+  <meta name="theme-color" content="#172b3a">
+  <title>MedOrchestrate · Explore research</title>
+  <meta name="description" content="A source linked biomedical literature explorer with lexical and optional local model reranking.">
+  <link rel="stylesheet" href="./research-style.css">
+  <script src="./research-core.js" defer></script>
   <script src="./app.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-  <div class="shell">
+  <div class="app-shell">
     <aside class="sidebar">
-      <div class="brand" aria-label="MedOrchestrate"><span class="brand-mark" aria-hidden="true">M</span><div><strong>MedOrchestrate</strong><small>Research workbench</small></div></div>
-      <div class="sidebar-label">WORKSPACE</div>
-      <nav aria-label="Workbench views">
-        <a class="nav active" href="#dashboard" data-page="dashboard"><span class="nav-number">01</span>Overview</a>
-        <a class="nav" href="#cases" data-page="cases"><span class="nav-number">02</span>Case explorer</a>
-        <a class="nav" href="#search" data-page="search"><span class="nav-number">03</span>Evidence search</a>
-        <a class="nav" href="#compare" data-page="compare"><span class="nav-number">04</span>Compare routes</a>
-        <a class="nav" href="#evaluation" data-page="evaluation"><span class="nav-number">05</span>Evaluation</a>
+      <div class="brand"><span class="brand-symbol" aria-hidden="true">M<span>·</span></span><div><strong>MedOrchestrate</strong><small>Research workspace</small></div></div>
+      <p class="side-label">WORKSPACE</p>
+      <nav aria-label="Main navigation">
+        <a class="nav active" href="#discover" data-view="discover"><span class="nav-icon" aria-hidden="true">⌕</span> Discover</a>
+        <a class="nav" href="#map" data-view="map"><span class="nav-icon" aria-hidden="true">◎</span> Evidence map</a>
+        <a class="nav" href="#collections" data-view="collections"><span class="nav-icon" aria-hidden="true">▤</span> Collections</a>
+        <a class="nav" href="#compare" data-view="compare"><span class="nav-icon" aria-hidden="true">◫</span> Compare studies</a>
+        <a class="nav" href="#history" data-view="history"><span class="nav-icon" aria-hidden="true">↺</span> Search history</a>
       </nav>
-      <div class="side-note"><span class="side-note-dot" aria-hidden="true"></span><strong>Static demonstration</strong><p>Cases and records are invented. Local citation import via CLI requires the Flask project. Do not use for clinical decisions.</p></div>
+      <div class="side-bottom">
+        <div class="model-card"><span class="model-card-kicker">LOCAL MODEL</span><strong>Trained MiniLM reranker</strong><p>Optional download to this browser. Lexical search works immediately.</p><button class="model-button" id="activate-model" type="button" disabled>Enable semantic search</button><small id="model-status" role="status" aria-live="polite">Model inactive</small></div>
+        <a class="legacy-link" href="./demo/index.html">Open fictional demo <span aria-hidden="true">↗</span></a>
+      </div>
     </aside>
     <div class="workspace">
-      <header class="topbar"><span class="topbar-title">Research methods / Static fixture</span><span class="top-status" id="connection-status" role="status" aria-live="polite"><span class="status-dot" aria-hidden="true"></span>Loading static demo…</span></header>
+      <header class="topbar"><span class="breadcrumb">LITERATURE EXPLORER <span>/</span> <strong id="view-name">Discover</strong></span><div class="topbar-right"><span class="snapshot-badge" id="snapshot-status" role="status" aria-live="polite">Loading research snapshot…</span><span class="avatar" aria-hidden="true">MO</span></div></header>
       <main id="main" tabindex="-1">
-        <section class="page active" id="dashboard" aria-labelledby="dashboard-title">
-          <div class="hero"><p class="eyebrow">STAGE 1 RESEARCH PROTOTYPE</p><h1 id="dashboard-title">Evidence search, with the route made visible.</h1><p class="intro">Explore how a question and case facts available on a chosen date influence a small, inspectable search fixture.</p><div class="hero-actions"><a class="primary" href="#search" data-page="search">Start a search <span aria-hidden="true">→</span></a><a class="secondary" href="#cases" data-page="cases">Explore cases</a></div></div>
-          <div class="fixture-banner" role="note"><strong>Demonstration data</strong><span>All cases and source records in this static site are invented. Local citation import via CLI requires the Flask project. Ranking changes are software observations, not evidence of clinical quality or retrieval effectiveness.</span></div>
-          <div class="metric-grid" aria-label="Fixture summary"><article class="metric"><span>Fictional cases</span><strong id="case-count">—</strong></article><article class="metric"><span>Invented source records</span><strong id="doc-count">—</strong></article><article class="metric"><span>Available routes</span><strong id="route-count">—</strong></article></div>
-          <div class="two-col"><article class="panel"><p class="panel-kicker">WORKFLOW</p><h2>From case to trace</h2><ol class="steps"><li>Choose a fictional case and fact date.</li><li>Ask a research question and select a route.</li><li>Inspect ranked records and the execution trace.</li><li>Compare routes on the same inputs.</li></ol></article><article class="panel"><p class="panel-kicker">IMPLEMENTED NOW</p><h2>Routes in this build</h2><ul class="route-list"><li><span class="route-dot"></span>Direct BM25</li><li><span class="route-dot"></span>Deterministic expansion + BM25</li><li><span class="route-dot"></span>Rule selected route</li></ul><p class="fine-print">Dense, hybrid, neural rewriting, and LoRA routes are not implemented in this prototype.</p></article></div>
+        <section class="view active" id="discover" aria-labelledby="discover-title">
+          <div class="hero"><div><p class="eyebrow">TOPIC-FIRST DISCOVERY</p><h1 id="discover-title">Follow a question through the evidence.</h1><p>Search source linked biomedical studies, inspect concept connections, and keep the papers that matter to your research.</p></div><div class="hero-ornament" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div></div>
+          <div class="source-note"><span class="note-dot" aria-hidden="true"></span><div><strong>Research literature, not patient advice.</strong> Results are publication records from a curated CC BY/CC0 Europe PMC snapshot or a live Europe PMC request. Rankings are exploration aids; read the underlying study.</div></div>
+          <form id="search-form" class="search-panel">
+            <label for="topic-input">What are you researching?</label>
+            <div class="search-row"><span class="search-icon" aria-hidden="true">⌕</span><input id="topic-input" type="search" maxlength="200" placeholder="e.g. kidney outcomes in type 2 diabetes" autocomplete="off" required><button class="primary" id="search-button" type="submit">Search literature <span aria-hidden="true">→</span></button></div>
+            <div class="search-options">
+              <div><label for="route-select">Ranking</label><select id="route-select"><option value="lexical">Lexical BM25</option><option value="semantic">Trained model rerank</option><option value="hybrid">Hybrid rerank</option></select></div>
+              <div><label for="publication-type">Study type</label><select id="publication-type"><option value="all">All publication types</option><option>Review</option><option>Clinical Trial</option><option>Randomized Controlled Trial</option><option>Journal Article</option><option>Meta-Analysis</option><option>Systematic Review</option></select></div>
+              <div><label for="year-from">From year</label><input id="year-from" type="number" min="1900" max="2100" placeholder="Any"></div>
+              <div><label for="year-to">Through year</label><input id="year-to" type="number" min="1900" max="2100" placeholder="Any"></div>
+              <label class="live-option"><input id="live-search" type="checkbox"><span>Search live Europe PMC</span></label>
+            </div>
+            <p class="helper" id="route-note">Lexical BM25 searches immediately. Model routes rerank up to 40 lexical candidates after you enable the local model.</p>
+          </form>
+          <section class="topic-section" aria-labelledby="topics-title"><div class="section-heading"><div><p class="eyebrow">A PLACE TO START</p><h2 id="topics-title">Explore a topic</h2></div><span id="topic-count"></span></div><div class="topic-grid" id="topic-grid"><p class="muted">Loading topics…</p></div></section>
+          <section class="results-section" aria-labelledby="results-title"><div class="section-heading"><div><p class="eyebrow">SOURCE LINKED RESULTS</p><h2 id="results-title">Studies</h2></div><span id="result-count"></span></div><div id="search-status" class="status-box" role="status" aria-live="polite">Choose a topic or enter a research question to begin.</div><div class="results-layout"><div class="results-list" id="results-list"></div><aside class="detail-panel" id="detail-panel" aria-label="Study details"><div class="detail-empty"><span aria-hidden="true">▤</span><h3>Select a study</h3><p>Review its abstract, provenance, concepts, and source links here.</p></div></aside></div></section>
         </section>
-        <section class="page" id="cases" aria-labelledby="cases-title" hidden>
-          <p class="eyebrow">01 / PATIENT CONTEXT</p><h1 id="cases-title">Case explorer</h1><p class="intro">Select an invented case and a cutoff date. Only facts available by that date are sent into query expansion.</p>
-          <div class="panel control-panel"><div class="control-grid"><div><label for="case-select">Fictional case</label><select id="case-select" disabled></select></div><div><label for="as-of">Facts available on</label><input type="date" id="as-of" disabled></div></div><p class="field-hint">These controls also set the context for Search and Compare.</p></div>
-          <div id="case-detail" aria-live="polite"><div class="empty-state">Loading cases…</div></div>
-        </section>
-        <section class="page" id="search" aria-labelledby="search-title" hidden>
-          <p class="eyebrow">02 / RETRIEVAL</p><h1 id="search-title">Evidence search</h1><p class="intro">Search the invented static corpus. The route, added terms, available facts, and ranked records are shown for inspection.</p><div class="context-strip" id="search-context">Loading case context…</div>
-          <form class="panel search-form" id="search-form"><label for="question">Research question</label><textarea id="question" rows="3" maxlength="500" placeholder="Enter a research question…" required disabled></textarea><div class="form-footer"><span class="field-hint">1–500 characters · <span id="question-count">0</span>/500</span></div><div class="control-grid"><div><label for="corpus">Source corpus</label><select id="corpus" disabled><option value="fictional-demo-v1">Fictional demonstration</option></select></div><div><label for="route">Search route</label><select id="route" disabled><option value="adaptive">Adaptive rule</option><option value="direct_bm25">Direct BM25</option><option value="expanded_bm25">Expanded BM25</option></select></div></div><p class="field-hint" id="corpus-note">Every demonstration record is invented. Local citation import via CLI requires the Flask project.</p><p class="route-help" id="route-help">A simple rule chooses a BM25 route based on question length and available facts.</p><button class="primary" id="search-button" type="submit" disabled>Run search</button></form>
-          <div id="search-output" aria-live="polite"><div class="empty-state">Run a search to see ranked records and an execution trace.</div></div>
-        </section>
-        <section class="page" id="compare" aria-labelledby="compare-title" hidden>
-          <p class="eyebrow">03 / ROUTE INSPECTION</p><h1 id="compare-title">Compare routes</h1><p class="intro">Run all three available routes against the same question, fictional case, cutoff date, and invented corpus. Inspect differences in the query and ranking.</p><div class="context-strip" id="compare-context">Loading case context…</div><button class="primary" id="compare-button" type="button" disabled>Compare three routes</button><div id="compare-output" aria-live="polite"><div class="empty-state">Run a comparison to inspect the three route outputs.</div></div>
-        </section>
-        <section class="page" id="evaluation" aria-labelledby="evaluation-title" hidden>
-          <p class="eyebrow">04 / RESEARCH STATUS</p><h1 id="evaluation-title">Evaluation</h1><p class="intro">Inspect fictional fixture checks and separate, read-only real-data research summaries.</p><div class="fixture-banner" role="note"><strong>Fictional judgments</strong><span>The demonstration relevance labels below were authored for this invented fixture. They are not independent clinical judgments and cannot establish real retrieval effectiveness or clinical validity.</span></div>
-          <div class="panel"><p class="panel-kicker">FICTIONAL BENCHMARK</p><h2>Route metrics</h2><p>Recall, mean reciprocal rank, and nDCG at the fixture cutoff. These values only describe this invented dataset.</p><button class="secondary" id="evaluation-button" type="button" disabled>Load fixture metrics</button><div id="evaluation-output" aria-live="polite"></div></div>
-          <div class="research-divider" aria-hidden="true"><span>SEPARATE RESEARCH CHECKPOINT</span></div>
-          <article class="panel stage2-panel" aria-labelledby="stage2-title"><p class="panel-kicker">STAGE 2 · AGGREGATE ONLY</p><h2 id="stage2-title">NFCorpus fixed BM25 baseline</h2><p>This read-only card summarizes a local run on the real BEIR NFCorpus test split. It uses fixed direct BM25 only. It does not use the fictional patient cases or demonstrate adaptive routing.</p><div id="stage2-summary-output" aria-live="polite"><div class="empty-state compact">Loading aggregate benchmark summary…</div></div><p class="field-hint">For Stage 2, this public site contains only aggregate counts, metrics, and protocol notes. NFCorpus text, queries, and qrels are not published here.</p><a class="secondary" href="https://github.com/SiddharthVD/MedOrchestrate-Stage1/blob/main/research/STAGE2_PROTOCOL.md" target="_blank" rel="noopener noreferrer">Read Stage 2 protocol ↗</a></article>
-          <article class="panel stage2-panel" aria-labelledby="training-title"><p class="panel-kicker">TRAINED MODEL · AGGREGATE ONLY</p><h2 id="training-title">Real-data retrieval experiment</h2><p>A small MiniLM retriever was trained locally on NFCorpus train judgments. Development queries selected a fixed BM25 plus trained-dense hybrid; the table shows its locked test comparison. This does not train or validate patient-aware routing.</p><div id="training-summary-output" aria-live="polite"><div class="empty-state compact">Loading aggregate training results…</div></div><p class="field-hint">The public site does not contain NFCorpus text, queries, relevance judgments, model weights, or raw rankings. Dense encoding took substantially longer than BM25 on the test machine.</p><a class="secondary" href="https://github.com/SiddharthVD/MedOrchestrate-Stage1/blob/main/research/TRAINING_RUN.md" target="_blank" rel="noopener noreferrer">Read training report ↗</a></article>
-          <div class="two-col"><article class="panel"><p class="panel-kicker">STATIC DIAGNOSTIC</p><h2>Operational checks</h2><p>Confirm that fixture files load, all three routes execute, and fact filtering respects the selected date.</p><button class="secondary" id="diagnostic-button" type="button" disabled>Run fixture checks</button><div id="diagnostic-output" aria-live="polite"></div></article><article class="panel"><p class="panel-kicker">RESEARCH GATE</p><h2>What a real study needs</h2><ol class="steps"><li>Licensed corpus and independent relevance judgments.</li><li>Frozen cases, splits, budgets, and ranking metrics.</li><li>Strong fixed baselines and statistical comparison.</li><li>Error analysis and clinical review where appropriate.</li></ol></article></div>
-        </section>
+
+        <section class="view" id="map" aria-labelledby="map-title" hidden><div class="view-heading"><p class="eyebrow">RELATIONSHIP EXPLORER</p><h1 id="map-title">Evidence map</h1><p>Concept links are drawn from the selected study metadata. Select an edge to see the study supporting it.</p></div><div id="map-status" class="status-box">Run a search to build a study–concept map.</div><div class="map-layout"><div class="map-canvas"><svg id="graph-svg" viewBox="0 0 920 560" role="img" aria-label="Study and concept graph"></svg></div><div class="map-side"><h2>Connections</h2><div id="graph-list" class="graph-list"></div><div id="edge-detail" class="edge-detail">Select a connection to inspect its source study.</div></div></div></section>
+
+        <section class="view" id="collections" aria-labelledby="collections-title" hidden><div class="view-heading"><p class="eyebrow">YOUR READING DESK</p><h1 id="collections-title">Collections</h1><p>Save citation metadata into named collections in this browser. Export a backup before clearing browser data.</p></div><div class="collections-toolbar"><form id="new-collection-form"><label for="collection-name">New collection</label><div class="inline-form"><input id="collection-name" maxlength="100" placeholder="e.g. CKD review shortlist" required><button class="primary" type="submit">Create</button></div></form><div class="collection-import"><label for="collection-import-file">Import collections JSON</label><input id="collection-import-file" type="file" accept=".json,application/json"></div></div><div id="collection-status" role="status" aria-live="polite"></div><div class="collections-layout"><div id="collections-list" class="collections-list"></div><div id="collection-detail" class="collection-detail"></div></div></section>
+
+        <section class="view" id="compare" aria-labelledby="compare-title" hidden><div class="view-heading"><p class="eyebrow">SIDE BY SIDE</p><h1 id="compare-title">Compare studies</h1><p>Select up to three studies from search results. Compare designs, abstracts, and source records before deciding what to read.</p></div><div id="compare-content" class="compare-content"><div class="status-box">Select studies from the Discover results to compare them here.</div></div></section>
+
+        <section class="view" id="history" aria-labelledby="history-title" hidden><div class="view-heading"><p class="eyebrow">RECENT EXPLORATION</p><h1 id="history-title">Search history</h1><p>History is stored only in this browser. Select a past topic to rerun it against the current snapshot and live source.</p></div><div class="history-tools"><button class="quiet-button" id="clear-history" type="button">Clear history</button></div><div id="history-list" class="history-list"></div></section>
       </main>
     </div>
   </div>

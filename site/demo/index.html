@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102f36">
+  <title>MedOrchestrate · Static demonstration</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="./search-core.js" defer></script>
+  <script src="./static-api.js" defer></script>
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand" aria-label="MedOrchestrate"><span class="brand-mark" aria-hidden="true">M</span><div><strong>MedOrchestrate</strong><small>Research workbench</small></div></div>
+      <div class="sidebar-label">WORKSPACE</div>
+      <nav aria-label="Workbench views">
+        <a class="nav active" href="#dashboard" data-page="dashboard"><span class="nav-number">01</span>Overview</a>
+        <a class="nav" href="#cases" data-page="cases"><span class="nav-number">02</span>Case explorer</a>
+        <a class="nav" href="#search" data-page="search"><span class="nav-number">03</span>Evidence search</a>
+        <a class="nav" href="#compare" data-page="compare"><span class="nav-number">04</span>Compare routes</a>
+        <a class="nav" href="#evaluation" data-page="evaluation"><span class="nav-number">05</span>Evaluation</a>
+      </nav>
+      <div class="side-note"><span class="side-note-dot" aria-hidden="true"></span><strong>Static demonstration</strong><p>Cases and records are invented. Local citation import via CLI requires the Flask project. Do not use for clinical decisions.</p></div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar"><span class="topbar-title">Research methods / Static fixture</span><span class="top-status" id="connection-status" role="status" aria-live="polite"><span class="status-dot" aria-hidden="true"></span>Loading static demo…</span></header>
+      <main id="main" tabindex="-1">
+        <section class="page active" id="dashboard" aria-labelledby="dashboard-title">
+          <div class="hero"><p class="eyebrow">STAGE 1 RESEARCH PROTOTYPE</p><h1 id="dashboard-title">Evidence search, with the route made visible.</h1><p class="intro">Explore how a question and case facts available on a chosen date influence a small, inspectable search fixture.</p><div class="hero-actions"><a class="primary" href="#search" data-page="search">Start a search <span aria-hidden="true">→</span></a><a class="secondary" href="#cases" data-page="cases">Explore cases</a></div></div>
+          <div class="fixture-banner" role="note"><strong>Demonstration data</strong><span>All cases and source records in this static site are invented. Local citation import via CLI requires the Flask project. Ranking changes are software observations, not evidence of clinical quality or retrieval effectiveness.</span></div>
+          <div class="metric-grid" aria-label="Fixture summary"><article class="metric"><span>Fictional cases</span><strong id="case-count">—</strong></article><article class="metric"><span>Invented source records</span><strong id="doc-count">—</strong></article><article class="metric"><span>Available routes</span><strong id="route-count">—</strong></article></div>
+          <div class="two-col"><article class="panel"><p class="panel-kicker">WORKFLOW</p><h2>From case to trace</h2><ol class="steps"><li>Choose a fictional case and fact date.</li><li>Ask a research question and select a route.</li><li>Inspect ranked records and the execution trace.</li><li>Compare routes on the same inputs.</li></ol></article><article class="panel"><p class="panel-kicker">IMPLEMENTED NOW</p><h2>Routes in this build</h2><ul class="route-list"><li><span class="route-dot"></span>Direct BM25</li><li><span class="route-dot"></span>Deterministic expansion + BM25</li><li><span class="route-dot"></span>Rule selected route</li></ul><p class="fine-print">Dense, hybrid, neural rewriting, and LoRA routes are not implemented in this prototype.</p></article></div>
+        </section>
+        <section class="page" id="cases" aria-labelledby="cases-title" hidden>
+          <p class="eyebrow">01 / PATIENT CONTEXT</p><h1 id="cases-title">Case explorer</h1><p class="intro">Select an invented case and a cutoff date. Only facts available by that date are sent into query expansion.</p>
+          <div class="panel control-panel"><div class="control-grid"><div><label for="case-select">Fictional case</label><select id="case-select" disabled></select></div><div><label for="as-of">Facts available on</label><input type="date" id="as-of" disabled></div></div><p class="field-hint">These controls also set the context for Search and Compare.</p></div>
+          <div id="case-detail" aria-live="polite"><div class="empty-state">Loading cases…</div></div>
+        </section>
+        <section class="page" id="search" aria-labelledby="search-title" hidden>
+          <p class="eyebrow">02 / RETRIEVAL</p><h1 id="search-title">Evidence search</h1><p class="intro">Search the invented static corpus. The route, added terms, available facts, and ranked records are shown for inspection.</p><div class="context-strip" id="search-context">Loading case context…</div>
+          <form class="panel search-form" id="search-form"><label for="question">Research question</label><textarea id="question" rows="3" maxlength="500" placeholder="Enter a research question…" required disabled></textarea><div class="form-footer"><span class="field-hint">1–500 characters · <span id="question-count">0</span>/500</span></div><div class="control-grid"><div><label for="corpus">Source corpus</label><select id="corpus" disabled><option value="fictional-demo-v1">Fictional demonstration</option></select></div><div><label for="route">Search route</label><select id="route" disabled><option value="adaptive">Adaptive rule</option><option value="direct_bm25">Direct BM25</option><option value="expanded_bm25">Expanded BM25</option></select></div></div><p class="field-hint" id="corpus-note">Every demonstration record is invented. Local citation import via CLI requires the Flask project.</p><p class="route-help" id="route-help">A simple rule chooses a BM25 route based on question length and available facts.</p><button class="primary" id="search-button" type="submit" disabled>Run search</button></form>
+          <div id="search-output" aria-live="polite"><div class="empty-state">Run a search to see ranked records and an execution trace.</div></div>
+        </section>
+        <section class="page" id="compare" aria-labelledby="compare-title" hidden>
+          <p class="eyebrow">03 / ROUTE INSPECTION</p><h1 id="compare-title">Compare routes</h1><p class="intro">Run all three available routes against the same question, fictional case, cutoff date, and invented corpus. Inspect differences in the query and ranking.</p><div class="context-strip" id="compare-context">Loading case context…</div><button class="primary" id="compare-button" type="button" disabled>Compare three routes</button><div id="compare-output" aria-live="polite"><div class="empty-state">Run a comparison to inspect the three route outputs.</div></div>
+        </section>
+        <section class="page" id="evaluation" aria-labelledby="evaluation-title" hidden>
+          <p class="eyebrow">04 / RESEARCH STATUS</p><h1 id="evaluation-title">Evaluation</h1><p class="intro">Inspect fictional fixture checks and separate, read-only real-data research summaries.</p><div class="fixture-banner" role="note"><strong>Fictional judgments</strong><span>The demonstration relevance labels below were authored for this invented fixture. They are not independent clinical judgments and cannot establish real retrieval effectiveness or clinical validity.</span></div>
+          <div class="panel"><p class="panel-kicker">FICTIONAL BENCHMARK</p><h2>Route metrics</h2><p>Recall, mean reciprocal rank, and nDCG at the fixture cutoff. These values only describe this invented dataset.</p><button class="secondary" id="evaluation-button" type="button" disabled>Load fixture metrics</button><div id="evaluation-output" aria-live="polite"></div></div>
+          <div class="research-divider" aria-hidden="true"><span>SEPARATE RESEARCH CHECKPOINT</span></div>
+          <article class="panel stage2-panel" aria-labelledby="stage2-title"><p class="panel-kicker">STAGE 2 · AGGREGATE ONLY</p><h2 id="stage2-title">NFCorpus fixed BM25 baseline</h2><p>This read-only card summarizes a local run on the real BEIR NFCorpus test split. It uses fixed direct BM25 only. It does not use the fictional patient cases or demonstrate adaptive routing.</p><div id="stage2-summary-output" aria-live="polite"><div class="empty-state compact">Loading aggregate benchmark summary…</div></div><p class="field-hint">For Stage 2, this public site contains only aggregate counts, metrics, and protocol notes. NFCorpus text, queries, and qrels are not published here.</p><a class="secondary" href="https://github.com/SiddharthVD/MedOrchestrate-Stage1/blob/main/research/STAGE2_PROTOCOL.md" target="_blank" rel="noopener noreferrer">Read Stage 2 protocol ↗</a></article>
+          <article class="panel stage2-panel" aria-labelledby="training-title"><p class="panel-kicker">TRAINED MODEL · AGGREGATE ONLY</p><h2 id="training-title">Real-data retrieval experiment</h2><p>A small MiniLM retriever was trained locally on NFCorpus train judgments. Development queries selected a fixed BM25 plus trained-dense hybrid; the table shows its locked test comparison. This does not train or validate patient-aware routing.</p><div id="training-summary-output" aria-live="polite"><div class="empty-state compact">Loading aggregate training results…</div></div><p class="field-hint">The public site does not contain NFCorpus text, queries, relevance judgments, model weights, or raw rankings. Dense encoding took substantially longer than BM25 on the test machine.</p><a class="secondary" href="https://github.com/SiddharthVD/MedOrchestrate-Stage1/blob/main/research/TRAINING_RUN.md" target="_blank" rel="noopener noreferrer">Read training report ↗</a></article>
+          <div class="two-col"><article class="panel"><p class="panel-kicker">STATIC DIAGNOSTIC</p><h2>Operational checks</h2><p>Confirm that fixture files load, all three routes execute, and fact filtering respects the selected date.</p><button class="secondary" id="diagnostic-button" type="button" disabled>Run fixture checks</button><div id="diagnostic-output" aria-live="polite"></div></article><article class="panel"><p class="panel-kicker">RESEARCH GATE</p><h2>What a real study needs</h2><ol class="steps"><li>Licensed corpus and independent relevance judgments.</li><li>Frozen cases, splits, budgets, and ranking metrics.</li><li>Strong fixed baselines and statistical comparison.</li><li>Error analysis and clinical review where appropriate.</li></ol></article></div>
+        </section>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

@@ -4,7 +4,11 @@ Research prototype of a patient aware medical literature retrieval workbench. St
 
 Read the [project guide](docs/PROJECT_GUIDE.md) for the purpose, implemented scope, limitations, future research gates, and next steps. The public `site/` edition runs entirely in the browser with the fictional fixture; the local Flask workbench includes the API and command-line citation import.
 
-Planned scope now includes a research knowledge graph for students and researchers: topic search, linked diseases/symptoms/interventions/studies/concepts, source-backed relationships, and saved literature collections. The [knowledge graph and product plan](docs/KNOWLEDGE_GRAPH_PLAN.md) explains the workflow, sources, architecture, delivery order, and why the current interactive demo feels narrow. These features are planned, not yet implemented.
+The local workspace now defaults to **Demo Data**, using the existing fictional fixtures without an external internet connection or AI API. **Live API** explicitly connects to the existing local Flask case/search/compare/evaluation endpoints; failures never switch silently to demo data. The dashboard shows the active engine, unavailable routes and recent browser-local sessions. Case and cutoff selectors are available beside search, and edited questions are marked exploratory and unscored.
+
+The optional local [real-literature explorer](http://127.0.0.1:8000/research/) searches a separately licensed 225-record Europe PMC snapshot. It includes an interactive study/concept graph, source/full-text/PDF links where supplied, saved citation collections, JSON/BibTeX/RIS export and study comparison. Live Europe PMC discovery uses the local research API and requires an explicit source selection. Graph edges represent indexing or literal mentions, not treatment or causal claims. Some external page/PDF checks return HTTP 403; source-provided links are not a guarantee of accessibility. The [scope plan](docs/KNOWLEDGE_GRAPH_PLAN.md) describes richer assertions and later research gates.
+
+The user's latest time-limited local-workspace instructions defer cloud deployment and large-scale neural integration. An export of the existing trained model and pilot embeddings has been prepared locally; browser inference is **not acceptance-verified** in this session. No new training or large evaluation was run. The existing public Pages deployment has not been updated with these local changes.
 
 **Live fictional demo:** [Open MedOrchestrate Stage 1](https://siddharthvd.github.io/MedOrchestrate-Stage1/).
 
@@ -26,6 +30,8 @@ Run the included checks:
 ```powershell
 python -m unittest discover -s tests -v
 node site/smoke.mjs
+node static/workspace-smoke.cjs
+node site/research-smoke.mjs
 ```
 
 ## Demonstration

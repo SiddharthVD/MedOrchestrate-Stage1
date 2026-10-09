@@ -1,0 +1,41 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import { createRequire } from 'node:module';
+import { createTokenizer } from './model-tokenizer.mjs';
+const require = createRequire(import.meta.url);
+const R = require('./research-core.js');
+const read = name => JSON.parse(fs.readFileSync(new URL(name, import.meta.url), 'utf8'));
+const corpus = read('./data/research-corpus.json');
+const docs = R.uniqueDocuments(corpus.documents);
+assert.equal(docs.length, 225);
+assert.ok(docs.every(doc => R.safeUrl(doc.source_url) && doc.license && doc.fulltext_url));
+assert.ok(R.bm25('asthma', docs).length > 0);
+assert.equal(R.filterDocuments(docs, {yearFrom: 1900, yearTo: 1901}).length, 0);
+const graph = R.buildGraph(docs, 12, 12);
+assert.ok(graph.edges.length);
+assert.ok(graph.edges.every(edge => ['INDEXED_WITH', 'MENTIONS'].includes(edge.relation) && R.safeUrl(edge.source_url)));
+assert.equal(R.safeUrl('javascript:alert(1)'), '');
+assert.equal(R.safeUrl('https://europepmc.org.evil.example/study'), '');
+assert.match(R.escapeHtml('<script>'), /&lt;script&gt;/);
+const candidate = [{doc: docs[0], lexical: 1}, {doc: docs[1], lexical: 0}];
+const semantic = R.rerank(candidate, [1, 0], [[0, 1], [1, 0]], 'semantic');
+assert.equal(semantic[0].doc.id, docs[1].id); // Nonlexical match can win dense search.
+const fusion = R.rerank(candidate, [1, 0], [[0, 1], [1, 0]], 'hybrid');
+assert.ok(fusion.every(row => Number.isFinite(row.score)));
+const collection = {version: 1, collections: [{id: 'one', name: 'Reading', documents: [R.citationMetadata(docs[0])]}]};
+assert.equal(R.validCollections(collection).collections[0].documents[0].id, docs[0].id);
+assert.throws(() => R.validCollections({version: 2, collections: []}));
+assert.match(R.bibtex([docs[0]]), /@article/);
+assert.match(R.ris([docs[0]]), /TY  - JOUR/);
+const manifest = read('./model/manifest.json');
+const vectors = read('./data/research-embeddings.json');
+assert.equal(vectors.model_sha256, manifest.sha256);
+assert.equal(vectors.corpus_updated_at, corpus.updated_at);
+assert.equal(vectors.documents.length, docs.length);
+assert.ok(vectors.documents.every(row => row.embedding.length === 384));
+const tokenize = createTokenizer(fs.readFileSync(new URL('./model/vocab.txt', import.meta.url), 'utf8'));
+for (const row of read('./model/parity-fixtures.json')) {
+  const expected = row.input_ids.filter((_, i) => row.attention_mask[i]);
+  assert.deepEqual(tokenize.encode(row.text), expected);
+}
+console.log('Research smoke passed: 225 real licensed records, graph provenance, ranking, exports, safe links and trained tokenizer parity.');

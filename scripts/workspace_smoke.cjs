@@ -1,0 +1,73 @@
+/* Browser acceptance checks: existing local workspace, no internet or AI API. */
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const {chromium} = require(process.env.PLAYWRIGHT_MODULE_PATH || 'playwright');
+
+(async () => {
+  const browser = await chromium.launch({channel: 'msedge', headless: true});
+  const context = await browser.newContext({viewport: {width: 1440, height: 1000}});
+  const page = await context.newPage();
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  const checks = [];
+  await context.route('**/*', route => {
+    const url = new URL(route.request().url());
+    if (url.hostname === '127.0.0.1' || url.protocol === 'blob:') return route.continue();
+    return route.abort();
+  });
+  try {
+    await page.goto('http://127.0.0.1:8000/');
+    await page.waitForFunction(() => document.querySelector('#connection-status').textContent.includes('Demo Data ready'));
+    assert.equal(await page.locator('#data-mode').inputValue(), 'demo');
+    checks.push('Demo Data defaults and starts with external network blocked');
+    await page.locator('a.nav[data-page="search"]').click();
+    await page.locator('#search-case-select').selectOption('case-ckd-01');
+    await page.waitForFunction(() => document.querySelector('#patient-context').textContent.includes('case-ckd-01'));
+    await page.locator('#question').fill('blood pressure management in kidney disease');
+    await page.locator('#route').selectOption('adaptive');
+    await page.locator('#search-button').click();
+    await page.waitForSelector('#search-output .result');
+    assert.match(await page.locator('#question-status').innerText(), /Edited question.*unscored/);
+    assert.match(await page.locator('#search-output').innerText(), /Invented record/);
+    checks.push('Case selection, edited question, adaptive retrieval, ranked results and trace');
+    await page.locator('a.nav[data-page="compare"]').click();
+    await page.locator('#compare-button').click();
+    await page.waitForSelector('#compare-output .compare-card');
+    assert.equal(await page.locator('#compare-output .compare-card').count(), 3);
+    assert.match(await page.locator('#compare-output').innerText(), /Top 5 overlap/);
+    checks.push('Three routes compared with measured latency, traces and rank differences');
+    await page.locator('a.nav[data-page="evaluation"]').click();
+    await page.locator('#evaluation-button').click();
+    await page.waitForSelector('#evaluation-output table');
+    checks.push('Compatible fictional fixture evaluation table');
+    await page.locator('#data-mode').selectOption('live');
+    await page.waitForFunction(() => document.querySelector('#connection-status').textContent.includes('Local API connected'));
+    await page.locator('a.nav[data-page="search"]').click();
+    await page.locator('#search-button').click();
+    await page.waitForSelector('#search-output .result');
+    checks.push('Live API connects to existing Flask search');
+    await page.route('**/api/**', route => route.abort());
+    await page.locator('#search-button').click();
+    await page.waitForSelector('#search-output .error-panel');
+    assert.match(await page.locator('#search-output').innerText(), /Cannot reach the local API/);
+    assert.equal(await page.locator('#data-mode').inputValue(), 'live');
+    checks.push('Backend failure stays in Live API and reports error without demo fallback');
+    await page.locator('#data-mode').selectOption('demo');
+    await page.waitForFunction(() => document.querySelector('#connection-status').textContent.includes('Demo Data ready'));
+    await page.locator('#search-button').click();
+    await page.waitForSelector('#search-output .result');
+    checks.push('Demo works while every backend API call is blocked');
+    await page.locator('a.nav[data-page="dashboard"]').click();
+    assert.ok(await page.locator('.session-row').count() > 0);
+    fs.mkdirSync(path.join(__dirname, '../work/screenshots'), {recursive: true});
+    await page.screenshot({path: path.join(__dirname, '../work/screenshots/workspace-dashboard.png'), fullPage: true});
+    await page.setViewportSize({width: 390, height: 844});
+    await page.locator('a.nav[data-page="search"]').click();
+    assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1));
+    checks.push('Recent sessions and mobile layout');
+    await page.screenshot({path: path.join(__dirname, '../work/screenshots/workspace-mobile.png'), fullPage: true});
+    assert.deepEqual(errors, []);
+    console.log(JSON.stringify({passed: checks.length, checks, browser_errors: errors}, null, 2));
+  } finally { await browser.close(); }
+})().catch(error => { console.error(error); process.exitCode = 1; });

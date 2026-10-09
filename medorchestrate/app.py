@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import date
 from pathlib import Path
 
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, send_from_directory
 
 from .benchmark import benchmark_status, evaluate_benchmark
 from .corpus import read_imported
@@ -21,6 +21,52 @@ CASES, DOCUMENTS = load_fixture()
 @app.get("/")
 def home():
     return render_template("index.html")
+
+
+@app.get("/demo-data/<filename>")
+def demo_data(filename):
+    if filename not in {"cases.json", "documents.json", "demo_qrels.json"}:
+        return jsonify({"error": "Unknown demonstration fixture"}), 404
+    return send_from_directory(ROOT / "data", filename)
+
+
+@app.get("/research/")
+def research_home():
+    return send_from_directory(ROOT / "site", "index.html")
+
+
+@app.get("/research/<path:filename>")
+def research_assets(filename):
+    if filename.endswith("/"):
+        filename += "index.html"
+    return send_from_directory(ROOT / "site", filename)
+
+
+@app.get("/api/research/status")
+def research_status():
+    from .research import status as source_status
+    return jsonify(source_status())
+
+
+@app.get("/api/research/search")
+def research_search():
+    from .research import ResearchError, search_live, search_snapshot
+    try:
+        mode = request.args.get("mode", "snapshot")
+        if mode not in {"live", "snapshot"}:
+            raise ValueError("Unknown research source mode")
+        filters = {"year_from": int(request.args["year_from"]) if request.args.get("year_from") else None,
+                   "year_to": int(request.args["year_to"]) if request.args.get("year_to") else None,
+                   "publication_type": request.args.get("publication_type", "all"),
+                   "source": request.args.get("source", "all"), "limit": int(request.args.get("limit", "20"))}
+        output = (search_live if mode == "live" else search_snapshot)(request.args.get("query", ""), **filters)
+        output["executed_route"] = "research_bm25"
+        output["evaluation"] = "Exploratory literature discovery; not the evaluated patient-aware engine"
+        return jsonify(output)
+    except ValueError as error:
+        return jsonify({"error": str(error)}), 400
+    except ResearchError as error:
+        return jsonify({"error": str(error), "mode": request.args.get("mode", "snapshot"), "fallback_used": False}), 502
 
 
 @app.get("/api/status")
