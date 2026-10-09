@@ -80,6 +80,8 @@ The laptop check recorded roughly 16.8 GB total RAM and 10.5 GB free disk at the
 
 ## Future scope and research gates
 
+The expanded product is planned for students and researchers. The [knowledge graph plan](KNOWLEDGE_GRAPH_PLAN.md) adds topic-first real-literature exploration, concept/study graphs with source provenance, saved collections, and a separately evaluated graph-assisted route. Its first prerequisite is real research search connected to the local model; the public interactive fixture has not acquired these features yet.
+
 | Gate | Work to complete | Evidence needed before moving on |
 | --- | --- | --- |
 | 2. Corpus and protocol — implemented | Use the BEIR NFCorpus transformed edition locally; pin source rights, archive and file hashes, split IDs, and a fixed lexical evaluation | Local frozen manifest, compatible train/dev/test qrels, raw BM25 rankings, and aggregate metrics; no fixture labels reused or source data republished |
@@ -88,6 +90,7 @@ The laptop check recorded roughly 16.8 GB total RAM and 10.5 GB free disk at the
 | 5. Adaptive controller | Compare rules, question-only learning, patient-aware learning, and a seeded diagnostic while counting all probes and fallbacks | Training-only fitting, development calibration, traceable total execution cost, no locked-test tuning |
 | 6. Formal evaluation | Freeze the comparator and run the locked test, uncertainty analysis, ablations, and failure review | Raw rankings and manifests for every numerical result; patient-aware synthetic results reported separately |
 | 7. Manuscript | Write methods and results tied to real runs and verified literature | Reproducible figures, citations, limitations, and no unsupported clinical claim |
+| Expanded research experience — planned | Real topic search, concept/study knowledge graph, supported contextual relationships and saved collections | Compatible source licenses, per-edge provenance, usable source inspection, graph/annotation audits, and a fresh held-out retrieval comparison before an improvement claim |
 
 [NFCorpus in BEIR](https://github.com/beir-cellar/beir) is the selected Stage 2 package. The [original owner](https://www.cl.uni-heidelberg.de/statnlpgroup/nfcorpus/) permits academic use but does not clearly grant public redistribution, so the real files remain local. NFCorpus studies retrieval for its own queries and does not supply patient-specific judgments. See the [frozen protocol](../research/STAGE2_PROTOCOL.md).
 

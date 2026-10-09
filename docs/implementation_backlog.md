@@ -16,3 +16,7 @@
 | BACKLOG | Learned cost aware controller | Disjoint splits and full call accounting |
 | BACKLOG | Base and LoRA query rewriting | Feasible local model and actual adapter weights |
 | BACKLOG | Formal experiments and paper | Frozen runs, uncertainty, ablations, citations |
+| PLANNED | Topic-first real research search | Permitted study pilot, actual source links, cached local trained-model/BM25 search; `docs/KNOWLEDGE_GRAPH_PLAN.md` |
+| PLANNED | Research knowledge graph | Canonical concepts, source-backed study links, bounded interactive explorer and accessible list view |
+| PLANNED | Research collections and richer assertions | Saved studies/citation export; contextual assertions with evidence, review state and held-out annotation audit |
+| PLANNED | Graph-assisted retrieval and live backend | Frozen evaluation against fixed routes, full resource accounting, separately reviewed backend hosting |

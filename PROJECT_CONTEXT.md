@@ -12,6 +12,8 @@ Stage 1 local and public demonstration was built from scratch after Siddharth co
 
 ## Confirmed scope
 
+- Primary audience for the expanded experience: students and researchers exploring medical literature, confirmed on 9 October 2026.
+- Planned research knowledge graph and topic-first exploration: diseases, symptoms, interventions, studies, biomedical concepts, source-backed assertions, and saved research collections. Case mode remains an optional research path. See `docs/KNOWLEDGE_GRAPH_PLAN.md`; these features are not yet implemented.
 - Local workbench for fictional patient context, question based evidence retrieval, ranked results, and an execution trace.
 - CPU friendly lexical retrieval and a transparent adaptive rule for the first demonstration.
 - No clinical assessment, diagnosis, treatment recommendations, real patient uploads, or clinical effectiveness claims.

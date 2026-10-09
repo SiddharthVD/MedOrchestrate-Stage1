@@ -4,6 +4,8 @@ Research prototype of a patient aware medical literature retrieval workbench. St
 
 Read the [project guide](docs/PROJECT_GUIDE.md) for the purpose, implemented scope, limitations, future research gates, and next steps. The public `site/` edition runs entirely in the browser with the fictional fixture; the local Flask workbench includes the API and command-line citation import.
 
+Planned scope now includes a research knowledge graph for students and researchers: topic search, linked diseases/symptoms/interventions/studies/concepts, source-backed relationships, and saved literature collections. The [knowledge graph and product plan](docs/KNOWLEDGE_GRAPH_PLAN.md) explains the workflow, sources, architecture, delivery order, and why the current interactive demo feels narrow. These features are planned, not yet implemented.
+
 **Live fictional demo:** [Open MedOrchestrate Stage 1](https://siddharthvd.github.io/MedOrchestrate-Stage1/).
 
 ## Run locally
